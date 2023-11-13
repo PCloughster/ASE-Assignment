@@ -6,5 +6,33 @@ namespace ase_assignment
         {
             InitializeComponent();
         }
+
+        private void singleLineConsole_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                string commandRun = singleLineConsole.Text.Trim().ToLower();
+            }
+        }
+
+        private void runButton_Click(object sender, EventArgs e)
+        {
+            // foreach loop to get all of the text from here
+        }
+
+        private void syntaxButton_Click(object sender, EventArgs e)
+        {
+            // just calls check syntax class
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            // open window to save current text in multiLineConsole
+        }
+
+        private void loadButton_Click(object sender, EventArgs e)
+        {
+            // open file select window to load text into multiLineConsole
+        }
     }
 }

@@ -59,6 +59,7 @@
             runButton.TabIndex = 1;
             runButton.Text = "Run";
             runButton.UseVisualStyleBackColor = true;
+            runButton.Click += runButton_Click;
             // 
             // syntaxButton
             // 
@@ -69,6 +70,7 @@
             syntaxButton.TabStop = false;
             syntaxButton.Text = "Syntax";
             syntaxButton.UseVisualStyleBackColor = true;
+            syntaxButton.Click += syntaxButton_Click;
             // 
             // singleLineConsole
             // 
@@ -80,6 +82,7 @@
             singleLineConsole.Name = "singleLineConsole";
             singleLineConsole.Size = new Size(865, 31);
             singleLineConsole.TabIndex = 3;
+            singleLineConsole.KeyDown += singleLineConsole_KeyDown;
             // 
             // loadButton
             // 
@@ -89,6 +92,7 @@
             loadButton.TabIndex = 4;
             loadButton.Text = "Load";
             loadButton.UseVisualStyleBackColor = true;
+            loadButton.Click += loadButton_Click;
             // 
             // saveButton
             // 
@@ -98,6 +102,7 @@
             saveButton.TabIndex = 5;
             saveButton.Text = "Save";
             saveButton.UseVisualStyleBackColor = true;
+            saveButton.Click += saveButton_Click;
             // 
             // pictureBox1
             // 
@@ -115,7 +120,7 @@
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.AppWorkspace;
-            ClientSize = new Size(1788, 1068);
+            ClientSize = new Size(1818, 1083);
             Controls.Add(pictureBox1);
             Controls.Add(saveButton);
             Controls.Add(loadButton);
