@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ase-assignment", "ase-assignment.csproj", "{487DE4AE-8483-47B4-BFA6-E2B97D0F2D08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASETests", "..\ASETests\ASETests.csproj", "{9902F2F7-C532-4F3B-B138-6E33110F0215}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASETests", "ASETests\ASETests.csproj", "{4D811A7B-8373-412C-8DC4-8DE9843F72F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{487DE4AE-8483-47B4-BFA6-E2B97D0F2D08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{487DE4AE-8483-47B4-BFA6-E2B97D0F2D08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{487DE4AE-8483-47B4-BFA6-E2B97D0F2D08}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9902F2F7-C532-4F3B-B138-6E33110F0215}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9902F2F7-C532-4F3B-B138-6E33110F0215}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9902F2F7-C532-4F3B-B138-6E33110F0215}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9902F2F7-C532-4F3B-B138-6E33110F0215}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D811A7B-8373-412C-8DC4-8DE9843F72F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D811A7B-8373-412C-8DC4-8DE9843F72F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D811A7B-8373-412C-8DC4-8DE9843F72F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D811A7B-8373-412C-8DC4-8DE9843F72F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
