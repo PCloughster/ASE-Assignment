@@ -32,6 +32,17 @@ namespace ase_assignment
             {
                 SetLastCommand(line);
             }
+            else
+            {
+                if (ValidParams(parameters) == false)
+                {
+                    throw new ArgumentOutOfRangeException(errorMessage);
+                }
+                if (ValidCommand(command) == false)
+                {
+                    throw new ArgumentException(errorMessage);
+                }
+            }
         }
         public Boolean ValidParams(int[] parameters)
         {
