@@ -16,5 +16,21 @@ namespace ase_assignment
         {
             
         }
+        public void clear()
+        {
+
+        }
+        public void reset()
+        {
+
+        }
+        public void pen(string colour)
+        {
+
+        }
+        public Boolean FillMode()
+        {
+            return false;
+        }
     }
 }
