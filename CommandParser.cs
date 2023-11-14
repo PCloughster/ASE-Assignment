@@ -11,7 +11,7 @@ namespace ase_assignment
     public class CommandParser
     {
         public string? errorMessage;
-        string[]? errorLog;
+        public string? errorLog;
         int upperLimit = 150;
         string[]? parametersStr;
         string? lastCommand;
@@ -37,7 +37,7 @@ namespace ase_assignment
                     parametersRequired = 0;
                     break;
                 case "pen":
-                    parametersRequired = 0;
+                    parametersRequired = 1;
                     break;
                 case "fill":
                     parametersRequired = 0;
@@ -65,6 +65,7 @@ namespace ase_assignment
                 parametersStr = fullCommand.Skip(1).ToArray();
                 parameters = Array.ConvertAll(parametersStr, int.Parse);
             }
+            CheckCommand(command);
             if (ValidParams(parameters, CheckCommand(command)) == true && validCommand== true)
             {
                 if (runCommand == true)
@@ -135,23 +136,17 @@ namespace ase_assignment
         {
             string[] commands = ProgramArray(userInput);
 
-            if (SyntaxChecker(userInput) == true)
+            foreach (string command in commands)
             {
-                foreach (string command in commands)
-                {
-                    ParseLine(command, true);
-                    SetLastProgram(userInput);
-                }
+                ParseLine(command, true);
+                SetLastProgram(userInput);
             }
-            else
-            {
-                // display errorLog to user
-            }
+
         }
-        public Boolean SyntaxChecker(String program)
+        public Boolean SyntaxCheckProgram(String program)
         {
             string[] commands = ProgramArray(program);
-
+            errorLog = "";
             int i = 1;
             int errors = 0;
             foreach (string command in commands)
@@ -160,9 +155,9 @@ namespace ase_assignment
                 {
                     ParseLine(command, false);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    errorLog.Append("Line " + i + ":" + errorMessage);
+                    errorLog+=("Line " + i + ":" + errorMessage + Environment.NewLine);
                     errors++;
                 }
                 i++;
@@ -178,19 +173,6 @@ namespace ase_assignment
             string[] commandArray = program.Split(Environment.NewLine);
             commandArray = commandArray.Where(x => !string.IsNullOrEmpty(x)).ToArray();
             return commandArray;
-        }
-        public void SyntaxCheckProgram(string userInput)
-        {
-            string[] commands = ProgramArray(userInput);
-
-            if (SyntaxChecker(userInput) == true)
-            {
-                // return syntax was correct
-            }
-            else
-            {
-                // display errorLog to user
-            }
         }
         public void SetLastProgram(string program)
         {

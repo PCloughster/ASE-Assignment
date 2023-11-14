@@ -35,6 +35,7 @@
             loadButton = new Button();
             saveButton = new Button();
             pictureBox1 = new PictureBox();
+            errorConsole = new TextBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -115,12 +116,24 @@
             pictureBox1.TabIndex = 6;
             pictureBox1.TabStop = false;
             // 
+            // errorConsole
+            // 
+            errorConsole.BackColor = SystemColors.ActiveCaptionText;
+            errorConsole.ForeColor = Color.Crimson;
+            errorConsole.Location = new Point(459, 1103);
+            errorConsole.Multiline = true;
+            errorConsole.Name = "errorConsole";
+            errorConsole.ReadOnly = true;
+            errorConsole.Size = new Size(865, 165);
+            errorConsole.TabIndex = 7;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.AppWorkspace;
-            ClientSize = new Size(1818, 1095);
+            ClientSize = new Size(1818, 1347);
+            Controls.Add(errorConsole);
             Controls.Add(pictureBox1);
             Controls.Add(saveButton);
             Controls.Add(loadButton);
@@ -145,5 +158,6 @@
         private Button loadButton;
         private Button saveButton;
         private PictureBox pictureBox1;
+        private TextBox errorConsole;
     }
 }

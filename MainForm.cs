@@ -13,20 +13,35 @@ namespace ase_assignment
         {
             if (e.KeyCode == Keys.Enter)
             {
-
-
                 commandParser.ParseSingleCommand(singleLineConsole.Text);
             }
         }
 
         private void runButton_Click(object sender, EventArgs e)
         {
-            commandParser.ParseMultipleCommands(multiLineConsole.Text);
+            Boolean syntaxValid = commandParser.SyntaxCheckProgram(multiLineConsole.Text);
+            if (syntaxValid == true)
+            {
+                errorConsole.Text = "Syntax is correct.";
+                commandParser.ParseMultipleCommands(multiLineConsole.Text);
+            }
+            else
+            {
+                errorConsole.Text = commandParser.errorLog;
+            }
         }
 
         private void syntaxButton_Click(object sender, EventArgs e)
         {
-            commandParser.SyntaxCheckProgram(multiLineConsole.Text);
+            Boolean syntaxValid = commandParser.SyntaxCheckProgram(multiLineConsole.Text);
+            if (syntaxValid == true)
+            {
+                errorConsole.Text = "Syntax is correct.";
+            }
+            else
+            {
+                errorConsole.Text = commandParser.errorLog;
+            }
         }
 
         private void saveButton_Click(object sender, EventArgs e)
