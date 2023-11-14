@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Patri\\source\\repos\\ase-assignment\\ase-assignment.csproj",
+      "projectUniqueName": "C:\\Users\\Patri\\source\\repos\\ase2023\\ASE-Assignment\\ase-assignment.csproj",
       "projectName": "ase-assignment",
-      "projectPath": "C:\\Users\\Patri\\source\\repos\\ase-assignment\\ase-assignment.csproj",
+      "projectPath": "C:\\Users\\Patri\\source\\repos\\ase2023\\ASE-Assignment\\ase-assignment.csproj",
       "packagesPath": "C:\\Users\\Patri\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Patri\\source\\repos\\ase-assignment\\obj\\",
+      "outputPath": "C:\\Users\\Patri\\source\\repos\\ase2023\\ASE-Assignment\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
