@@ -13,6 +13,7 @@ namespace ASETests
             drawer.MoveTo(50,50);
             int[] penCoordinates = drawer.GetCurrentPosition();
             int[] expectedCoordinates = { 50, 50 };
+
             Assert.AreEqual(expectedCoordinates, penCoordinates);
         }
         [TestMethod]
@@ -30,9 +31,20 @@ namespace ASETests
         {
             Drawer drawer = new Drawer();
             drawer.DrawTo(50, 50);
+            drawer.Clear();
             Boolean isEmpty = drawer.graphics.IsClipEmpty;
 
             Assert.IsTrue(isEmpty);
+        }
+        [TestMethod]
+        public void testResetFunctions()
+        {
+            Drawer drawer = new Drawer();
+            drawer.DrawTo(50, 50);
+            drawer.Reset();
+            int[] currentPosition = drawer.GetCurrentPosition();
+
+            Assert.AreEqual(currentPosition, drawer.startingPosition);
         }
 
     }

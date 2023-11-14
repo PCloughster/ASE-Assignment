@@ -9,17 +9,18 @@ namespace ase_assignment
 {
     public class Drawer
     {
-        Point startingPosition;
+        public Graphics graphics;
+        public Point startingPosition;
+
         Point currentPosition;
         Point lastPosition;
-        public Graphics graphics;
         Pen pn;
         public Drawer() {
             startingPosition = new Point(450, 475);
             currentPosition = new Point(450, 475);
             pn = new Pen(Color.Blue, 5);
         }
-        public void setGraphicsArea(IntPtr graphicsArea)
+        public void SetGraphicsArea(IntPtr graphicsArea)
         {
             graphics = Graphics.FromHwnd(graphicsArea);
             
@@ -30,17 +31,19 @@ namespace ase_assignment
         }
         public void DrawTo(int x, int y) 
         {
-
+            Point targetPos = new Point(x, y); 
+            graphics.DrawLine(pn, currentPosition, targetPos);
+            SetCurrentPosition(currentPosition, targetPos);
         }
         public void Clear()
         {
-
+            graphics.Clear(Color.White);
         }
-        public void reset()
+        public void Reset()
         {
 
         }
-        public void pen(string colour)
+        public void Pen(string colour)
         {
 
         }
@@ -51,7 +54,7 @@ namespace ase_assignment
         }
         public int[] GetCurrentPosition()
         {
-            int[] currentPositionArr = {currentPosition.X, currentPosition.Y}; 
+            int[] currentPositionArr = {currentPosition.X} 
             return currentPositionArr;
         }
         public Boolean FillMode()
