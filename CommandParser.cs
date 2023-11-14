@@ -12,6 +12,7 @@ namespace ase_assignment
         int upperLimit = 150;
         string[]? parametersStr;
         string? lastCommand;
+        string? lastProgram;
         Boolean validCommand;
 
         public int CheckCommand(string command)
@@ -112,6 +113,14 @@ namespace ase_assignment
                 return true;
             }
         }
+        public void SaveProgram(string programName, string[] currentProgram)
+        {
+
+        }
+        public void LoadProgram(string programName)
+        {
+
+        }
         public void ParseSingleCommand(string userInput)
         {
             ParseLine(userInput);
@@ -120,11 +129,19 @@ namespace ase_assignment
         {
 
         }
+        public void SetLastProgram(string program)
+        {
+            lastProgram = program;
+        }
+        public string GetLastProgram()
+        {
+            return lastProgram;
+        }
         public void SetLastCommand(string command)
         {
             lastCommand = command;
         }
-        public String GetLastCommand()
+        public string GetLastCommand()
         {
             return lastCommand;
         }
