@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ase_assignment
 {
     public class CommandParser
     {
         public string? errorMessage;
+        string[]? errorLog;
         int upperLimit = 150;
         string[]? parametersStr;
         string? lastCommand;
         string? lastProgram;
-        Boolean validCommand;
+        Boolean validCommand = true;
+        
 
         public int CheckCommand(string command)
         {
@@ -40,16 +44,12 @@ namespace ase_assignment
                     break;
                 default:
                     validCommand = false;
+                    errorMessage = "invalid command entered";
                     break;
             }
-            if (validCommand != false)
-            {
-                validCommand = true;
-                errorMessage = "invalid command entered";
-            } 
             return parametersRequired;
         }
-        public void ParseLine(string line)
+        public void ParseLine(string line, Boolean runCommand)
         {
             int[]? parameters;
             line = line.Trim().ToLower();
@@ -67,7 +67,10 @@ namespace ase_assignment
             }
             if (ValidParams(parameters, CheckCommand(command)) == true && validCommand== true)
             {
-                SetLastCommand(line);
+                if (runCommand == true)
+                {
+                    SetLastCommand(line);
+                }
             }
             else
             {
@@ -113,21 +116,81 @@ namespace ase_assignment
                 return true;
             }
         }
-        public void SaveProgram(string programName, string[] currentProgram)
+        public void SaveProgram(string fileName, string[] currentProgram)
         {
-
+            File.WriteAllLines(fileName, currentProgram);
         }
-        public void LoadProgram(string programName)
+        public string LoadProgram(string programName)
         {
-
+            string lines = "";
+            string[] program = File.ReadAllLines(programName);
+            lines = string.Join(Environment.NewLine, program);
+            return lines;
         }
         public void ParseSingleCommand(string userInput)
         {
-            ParseLine(userInput);
+            ParseLine(userInput, true);
         }
         public void ParseMultipleCommands(string userInput)
         {
+            string[] commands = ProgramArray(userInput);
 
+            if (SyntaxChecker(userInput) == true)
+            {
+                foreach (string command in commands)
+                {
+                    ParseLine(command, true);
+                    SetLastProgram(userInput);
+                }
+            }
+            else
+            {
+                // display errorLog to user
+            }
+        }
+        public Boolean SyntaxChecker(String program)
+        {
+            string[] commands = ProgramArray(program);
+
+            int i = 1;
+            int errors = 0;
+            foreach (string command in commands)
+            {
+                try
+                {
+                    ParseLine(command, false);
+                }
+                catch (Exception e)
+                {
+                    errorLog.Append("Line " + i + ":" + errorMessage);
+                    errors++;
+                }
+                i++;
+            }
+            if (errors > 0)
+            {
+                return false;
+            }
+            else { return true; }
+        }
+        public string[] ProgramArray(string program)
+        {
+            string[] commandArray = program.Split(Environment.NewLine);
+            commandArray = commandArray.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            return commandArray;
+        }
+        public void SyntaxCheckProgram(string userInput)
+        {
+            string[] commands = ProgramArray(userInput);
+
+            if (SyntaxChecker(userInput) == true)
+            {
+                // return syntax was correct
+            }
+            else
+            {
+                // display errorLog to user
+            }
         }
         public void SetLastProgram(string program)
         {

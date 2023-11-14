@@ -2,6 +2,7 @@ namespace ase_assignment
 {
     public partial class MainForm : Form
     {
+        CommandParser commandParser = new CommandParser();
         public MainForm()
         {
             InitializeComponent();
@@ -12,7 +13,7 @@ namespace ase_assignment
         {
             if (e.KeyCode == Keys.Enter)
             {
-                CommandParser commandParser = new CommandParser();
+
 
                 commandParser.ParseSingleCommand(singleLineConsole.Text);
             }
@@ -20,12 +21,12 @@ namespace ase_assignment
 
         private void runButton_Click(object sender, EventArgs e)
         {
-            // foreach loop to get all of the text from here
+            commandParser.ParseMultipleCommands(multiLineConsole.Text);
         }
 
         private void syntaxButton_Click(object sender, EventArgs e)
         {
-            // just calls check syntax class
+            commandParser.SyntaxCheckProgram(multiLineConsole.Text);
         }
 
         private void saveButton_Click(object sender, EventArgs e)
