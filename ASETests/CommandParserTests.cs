@@ -3,7 +3,7 @@ using ase_assignment;
 namespace ASETests
 {
     [TestClass]
-    public class BasicCommandTests
+    public class CommandParserTests
     {
         [TestMethod]
         public void TestCaseSensitive_SingleCommand()
