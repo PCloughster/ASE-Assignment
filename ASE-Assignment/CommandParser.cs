@@ -17,7 +17,6 @@ namespace ase_assignment
         string? lastCommand;
         string? lastProgram;
         Boolean validCommand = true;
-        
 
         public int CheckCommand(string command)
         {

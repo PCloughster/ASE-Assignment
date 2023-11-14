@@ -34,11 +34,12 @@
             singleLineConsole = new TextBox();
             loadButton = new Button();
             saveButton = new Button();
-            pictureBox1 = new PictureBox();
+            drawingArea = new PictureBox();
             errorConsole = new TextBox();
             saveProgramDialog = new SaveFileDialog();
             loadProgramDialog = new OpenFileDialog();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            button1 = new Button();
+            ((System.ComponentModel.ISupportInitialize)drawingArea).BeginInit();
             SuspendLayout();
             // 
             // multiLineConsole
@@ -51,12 +52,12 @@
             multiLineConsole.Location = new Point(32, 56);
             multiLineConsole.Multiline = true;
             multiLineConsole.Name = "multiLineConsole";
-            multiLineConsole.Size = new Size(865, 889);
+            multiLineConsole.Size = new Size(900, 900);
             multiLineConsole.TabIndex = 0;
             // 
             // runButton
             // 
-            runButton.Location = new Point(32, 1008);
+            runButton.Location = new Point(32, 1013);
             runButton.Name = "runButton";
             runButton.Size = new Size(112, 34);
             runButton.TabIndex = 1;
@@ -66,7 +67,7 @@
             // 
             // syntaxButton
             // 
-            syntaxButton.Location = new Point(165, 1008);
+            syntaxButton.Location = new Point(150, 1013);
             syntaxButton.Name = "syntaxButton";
             syntaxButton.Size = new Size(112, 34);
             syntaxButton.TabIndex = 2;
@@ -81,9 +82,9 @@
             singleLineConsole.BorderStyle = BorderStyle.FixedSingle;
             singleLineConsole.Font = new Font("Lucida Console", 12F, FontStyle.Regular, GraphicsUnit.Point);
             singleLineConsole.ForeColor = Color.Lime;
-            singleLineConsole.Location = new Point(32, 962);
+            singleLineConsole.Location = new Point(32, 976);
             singleLineConsole.Name = "singleLineConsole";
-            singleLineConsole.Size = new Size(865, 31);
+            singleLineConsole.Size = new Size(900, 31);
             singleLineConsole.TabIndex = 3;
             singleLineConsole.KeyDown += singleLineConsole_KeyDown;
             // 
@@ -107,16 +108,16 @@
             saveButton.UseVisualStyleBackColor = true;
             saveButton.Click += saveButton_Click;
             // 
-            // pictureBox1
+            // drawingArea
             // 
-            pictureBox1.BackColor = SystemColors.HighlightText;
-            pictureBox1.BorderStyle = BorderStyle.FixedSingle;
-            pictureBox1.Cursor = Cursors.Cross;
-            pictureBox1.Location = new Point(959, 57);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(785, 936);
-            pictureBox1.TabIndex = 6;
-            pictureBox1.TabStop = false;
+            drawingArea.BackColor = Color.White;
+            drawingArea.BorderStyle = BorderStyle.FixedSingle;
+            drawingArea.Cursor = Cursors.Cross;
+            drawingArea.Location = new Point(959, 57);
+            drawingArea.Name = "drawingArea";
+            drawingArea.Size = new Size(900, 950);
+            drawingArea.TabIndex = 6;
+            drawingArea.TabStop = false;
             // 
             // errorConsole
             // 
@@ -126,7 +127,7 @@
             errorConsole.Multiline = true;
             errorConsole.Name = "errorConsole";
             errorConsole.ReadOnly = true;
-            errorConsole.Size = new Size(1712, 165);
+            errorConsole.Size = new Size(1827, 165);
             errorConsole.TabIndex = 7;
             // 
             // saveProgramDialog
@@ -137,14 +138,25 @@
             // 
             loadProgramDialog.Filter = "text document|*.txt";
             // 
+            // button1
+            // 
+            button1.Location = new Point(959, 1013);
+            button1.Name = "button1";
+            button1.Size = new Size(112, 34);
+            button1.TabIndex = 8;
+            button1.Text = "button1";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.AppWorkspace;
-            ClientSize = new Size(1818, 1347);
+            ClientSize = new Size(1910, 1347);
+            Controls.Add(button1);
             Controls.Add(errorConsole);
-            Controls.Add(pictureBox1);
+            Controls.Add(drawingArea);
             Controls.Add(saveButton);
             Controls.Add(loadButton);
             Controls.Add(singleLineConsole);
@@ -154,7 +166,7 @@
             ForeColor = SystemColors.ControlText;
             Name = "MainForm";
             Text = "Draw with words";
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)drawingArea).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -167,9 +179,10 @@
         private TextBox singleLineConsole;
         private Button loadButton;
         private Button saveButton;
-        private PictureBox pictureBox1;
+        private PictureBox drawingArea;
         private TextBox errorConsole;
         private SaveFileDialog saveProgramDialog;
         private OpenFileDialog loadProgramDialog;
+        private Button button1;
     }
 }

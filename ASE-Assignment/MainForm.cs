@@ -1,14 +1,16 @@
+using System.Threading;
+
 namespace ase_assignment
 {
     public partial class MainForm : Form
     {
         CommandParser commandParser = new CommandParser();
+        Drawer drawer = new Drawer();
         public MainForm()
         {
             InitializeComponent();
-
+            drawer.setGraphicsArea(drawingArea.Handle);
         }
-
         private void singleLineConsole_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -60,6 +62,12 @@ namespace ase_assignment
                 string loadedProgram = commandParser.LoadProgram(loadProgramDialog.FileName);
                 multiLineConsole.Text = loadedProgram;
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            drawer.setGraphicsArea(drawingArea.Handle);
+            drawer.DrawTo(400, 400);
         }
     }
 }
