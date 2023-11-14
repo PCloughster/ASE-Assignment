@@ -5,13 +5,16 @@ namespace ase_assignment
         public MainForm()
         {
             InitializeComponent();
+
         }
 
         private void singleLineConsole_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                string commandRun = singleLineConsole.Text.Trim().ToLower();
+                CommandParser commandParser = new CommandParser();
+                
+                commandParser.ParseSingleCommand(singleLineConsole.Text);
             }
         }
 
