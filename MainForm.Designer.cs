@@ -36,6 +36,8 @@
             saveButton = new Button();
             pictureBox1 = new PictureBox();
             errorConsole = new TextBox();
+            saveProgramDialog = new SaveFileDialog();
+            loadProgramDialog = new OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -127,6 +129,14 @@
             errorConsole.Size = new Size(1712, 165);
             errorConsole.TabIndex = 7;
             // 
+            // saveProgramDialog
+            // 
+            saveProgramDialog.Filter = "text document|*.txt";
+            // 
+            // loadProgramDialog
+            // 
+            loadProgramDialog.Filter = "text document|*.txt";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -159,5 +169,7 @@
         private Button saveButton;
         private PictureBox pictureBox1;
         private TextBox errorConsole;
+        private SaveFileDialog saveProgramDialog;
+        private OpenFileDialog loadProgramDialog;
     }
 }

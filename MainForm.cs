@@ -46,12 +46,20 @@ namespace ase_assignment
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            // open window to save current text in multiLineConsole
+            if (saveProgramDialog.ShowDialog() == DialogResult.OK)
+            {
+                string[] program = commandParser.ProgramArray(multiLineConsole.Text);
+                commandParser.SaveProgram(saveProgramDialog.FileName, program);
+            }
         }
 
         private void loadButton_Click(object sender, EventArgs e)
         {
-            // open file select window to load text into multiLineConsole
+            if (loadProgramDialog.ShowDialog() == DialogResult.OK)
+            {
+                string loadedProgram = commandParser.LoadProgram(loadProgramDialog.FileName);
+                multiLineConsole.Text = loadedProgram;
+            }
         }
     }
 }
