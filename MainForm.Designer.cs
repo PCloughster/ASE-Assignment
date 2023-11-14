@@ -120,11 +120,11 @@
             // 
             errorConsole.BackColor = SystemColors.ActiveCaptionText;
             errorConsole.ForeColor = Color.Crimson;
-            errorConsole.Location = new Point(459, 1103);
+            errorConsole.Location = new Point(32, 1103);
             errorConsole.Multiline = true;
             errorConsole.Name = "errorConsole";
             errorConsole.ReadOnly = true;
-            errorConsole.Size = new Size(865, 165);
+            errorConsole.Size = new Size(1712, 165);
             errorConsole.TabIndex = 7;
             // 
             // MainForm
