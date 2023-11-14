@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ase_assignment
 {
-    internal class DrawingCommands
+    public class Drawer
     {
         public void MoveTo(int x, int y)
         {
