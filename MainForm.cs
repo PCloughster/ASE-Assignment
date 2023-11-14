@@ -13,7 +13,7 @@ namespace ase_assignment
             if (e.KeyCode == Keys.Enter)
             {
                 CommandParser commandParser = new CommandParser();
-                
+
                 commandParser.ParseSingleCommand(singleLineConsole.Text);
             }
         }

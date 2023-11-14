@@ -12,6 +12,42 @@ namespace ase_assignment
         int upperLimit = 150;
         string[]? parametersStr;
         string? lastCommand;
+        Boolean validCommand;
+
+        public int CheckCommand(string command)
+        {
+            int parametersRequired = 0;
+            switch (command)
+            {
+                case "moveto":
+                    parametersRequired = 2;
+                    break;
+                case "drawto":
+                    parametersRequired = 2;
+                    break;
+                case "clear":
+                    parametersRequired = 0;
+                    break;
+                case "reset":
+                    parametersRequired = 0;
+                    break;
+                case "pen":
+                    parametersRequired = 0;
+                    break;
+                case "fill":
+                    parametersRequired = 0;
+                    break;
+                default:
+                    validCommand = false;
+                    break;
+            }
+            if (validCommand != false)
+            {
+                validCommand = true;
+                errorMessage = "invalid command entered";
+            } 
+            return parametersRequired;
+        }
         public void ParseLine(string line)
         {
             int[]? parameters;
@@ -28,26 +64,24 @@ namespace ase_assignment
                 parametersStr = fullCommand.Skip(1).ToArray();
                 parameters = Array.ConvertAll(parametersStr, int.Parse);
             }
-            if (ValidParams(parameters) == true && ValidCommand(command) == true)
+            if (ValidParams(parameters, CheckCommand(command)) == true && validCommand== true)
             {
                 SetLastCommand(line);
             }
             else
             {
-                if (ValidParams(parameters) == false)
+                if (ValidParams(parameters, CheckCommand(command)) == false)
                 {
                     throw new ArgumentOutOfRangeException(errorMessage);
                 }
-                if (ValidCommand(command) == false)
+                if (validCommand == false)
                 {
                     throw new ArgumentException(errorMessage);
                 }
             }
         }
-        public Boolean ValidParams(int[] parameters)
+        public Boolean ValidParams(int[] parameters, int parametersRequired)
         {
-
-            int parametersRequired = 2;
             if (parametersRequired > 0)
             {
                 if (parameters == null)
@@ -77,10 +111,6 @@ namespace ase_assignment
             {
                 return true;
             }
-        }
-        public Boolean ValidCommand(string command)
-        {
-            return true;
         }
         public void ParseSingleCommand(string userInput)
         {

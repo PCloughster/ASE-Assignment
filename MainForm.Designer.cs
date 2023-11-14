@@ -120,7 +120,7 @@
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.AppWorkspace;
-            ClientSize = new Size(1818, 1083);
+            ClientSize = new Size(1818, 1095);
             Controls.Add(pictureBox1);
             Controls.Add(saveButton);
             Controls.Add(loadButton);
