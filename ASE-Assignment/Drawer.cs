@@ -11,14 +11,25 @@ namespace ase_assignment
     {
         public Graphics graphics;
         public Point startingPosition;
+        public Boolean isClear;
 
         Point currentPosition;
         Point lastPosition;
         Pen pn;
-        public Drawer() {
-            startingPosition = new Point(450, 475);
-            currentPosition = new Point(450, 475);
+        
+        public Drawer(IntPtr graphicsArea) {
+            startingPosition = new Point(0, 0);
+            currentPosition = startingPosition;
             pn = new Pen(Color.Blue, 5);
+            isClear = true;
+            SetGraphicsArea(graphicsArea);
+        }
+        public Drawer()
+        {
+            startingPosition = new Point(0, 0);
+            currentPosition = startingPosition;
+            pn = new Pen(Color.Blue, 5);
+            isClear = true;
         }
         public void SetGraphicsArea(IntPtr graphicsArea)
         {
@@ -32,13 +43,18 @@ namespace ase_assignment
         }
         public void DrawTo(int x, int y) 
         {
-            Point targetPos = new Point(x, y); 
-            graphics.DrawLine(pn, currentPosition, targetPos);
+            Point targetPos = new Point(x, y);
+            if (graphics != null)
+            {
+               graphics.DrawLine(pn, currentPosition, targetPos);
+            }
             SetCurrentPosition(currentPosition, targetPos);
+            if (isClear == true) { isClear = false; }
         }
         public void Clear()
         {
-            graphics.Clear(Color.White);
+            if (graphics != null) { graphics.Clear(Color.White); }
+            isClear = true;
         }
         public void Reset()
         {

@@ -24,9 +24,11 @@ namespace ASETests
 
             drawer.Clear();
             drawer.DrawTo(50, 50);
-            Boolean isEmpty = drawer.graphics.IsClipEmpty;
+            int[] penCoordinates = drawer.GetCurrentPosition();
+            int[] expectedCoordinates = { 50, 50 };
 
-            Assert.IsFalse(isEmpty);
+            Assert.IsFalse(drawer.isClear);
+            Assert.IsTrue(expectedCoordinates.SequenceEqual(penCoordinates));
         }
         [TestMethod]
         public void testClearFunctions()
