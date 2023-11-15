@@ -78,5 +78,13 @@ namespace ase_assignment
         {
             return false;
         }
+        public void SetPenColour(string colour)
+        {
+            pn.Color = Color.FromName(colour);
+        }
+        public string GetPenColour()
+        {
+            return pn.Color.ToString();
+        }
     }
 }

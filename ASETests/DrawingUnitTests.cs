@@ -57,11 +57,10 @@ namespace ASETests
         {
             Drawer drawer = new Drawer();
 
-            string initialColour = drawer.GetPenColour();
-            drawer.ChangePenColour("black");
-            string changedColour = drwaer.GetPenColour();
+            drawer.SetPenColour("black");
+            string changedColour = drawer.GetPenColour();
 
-            Assert.AreEqual(initialColour, changedColour);
+            Assert.AreNotEqual("black", changedColour.ToLower());
 
         }
 
