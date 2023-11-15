@@ -37,9 +37,8 @@ namespace ASETests
 
             drawer.DrawTo(50, 50);
             drawer.Clear();
-            Boolean isEmpty = drawer.graphics.IsClipEmpty;
 
-            Assert.IsTrue(isEmpty);
+            Assert.IsTrue(drawer.isClear);
         }
         [TestMethod]
         public void testResetFunctions()
