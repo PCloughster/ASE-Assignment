@@ -28,5 +28,10 @@ namespace ase_assignment
                 g.DrawRectangle(p, x, y, width, height);
             }
         }
+
+        public override string ToString()
+        {
+            return base.ToString()+"  "+this.width+","+this.height;
+        }
     }
 }

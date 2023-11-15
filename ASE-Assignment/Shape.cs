@@ -21,6 +21,9 @@ namespace ase_assignment
 
         public abstract void Draw(Graphics g);
 
-
+        public override string ToString()
+        {
+            return base.ToString()+this.colour.ToString()+"  "+this.fillType.ToString()+"  "+this.x+","+this.y+" : ";
+        }
     }
 }

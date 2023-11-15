@@ -17,9 +17,7 @@ namespace ase_assignment
         Point currentPosition;
         Point lastPosition;
         Pen pn;
-        Rectangle rectangle;
-
-
+        Shape shape;
 
         public Drawer(IntPtr graphicsArea) {
             startingPosition = new Point(0, 0);
@@ -72,7 +70,8 @@ namespace ase_assignment
             }
             else
             {
-                 
+                 shape = new Rectangle(pn.Color, fillMode, currentPosition.X, currentPosition.Y, width, height);
+                 if (graphics != null) { shape.Draw(graphics); }
             }
         }
         public void SetCurrentPosition(Point curPos, Point targetPos)
@@ -100,6 +99,10 @@ namespace ase_assignment
         public string GetPenColour()
         {
             return pn.Color.ToString();
+        }
+        public Shape GetShape()
+        {
+            return shape;
         }
     }
 }

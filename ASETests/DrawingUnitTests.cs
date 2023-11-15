@@ -80,12 +80,13 @@ namespace ASETests
         public void TestRectangle()
         {
             Drawer drawer = new Drawer();
-            Rectangle comparisonRectangle = new Rectangle(Color.Blue, false, 0, 0, 20, 20);
+            Shape comparisonRectangle = new Rectangle(Color.Blue, false, 0, 0, 20, 20);
 
             drawer.DrawShape("rectangle", 20, 20);
-            Rectangle actualRectangle = drawer.GetShape();
-
-            Assert.AreEqual(comparisonRectangle, actualRectangle);
+            Shape actualRectangle = drawer.GetShape();
+            string comparisonRectangleStr = comparisonRectangle.ToString();
+            string actualRectangleStr = actualRectangle.ToString();
+            Assert.AreEqual(comparisonRectangleStr, actualRectangleStr);
         }
         [TestMethod]
         public void TestCircle()
