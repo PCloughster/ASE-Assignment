@@ -1,5 +1,6 @@
 ﻿using ase_assignment;
 using System.Drawing;
+using System.Reflection.Metadata;
 
 namespace ASETests
 {
@@ -74,6 +75,26 @@ namespace ASETests
 
             Assert.AreNotEqual(initialFillMode, finalFillMode);
         }
+        [TestMethod]
+        public void TestRectangle()
+        {
+            Drawer drawer = new Drawer();
+            Rectangle comparisonRectangle;
 
+            drawer.DrawShape("rectangle", 20, 20);
+            Rectangle actualRectangle = drawer.GetShape();
+
+            Assert.AreEqual(comparisonRectangle, actualRectangle);
+        }
+        [TestMethod]
+        public void TestCircle()
+        {
+
+        }
+        [TestMethod]
+        public void TestTriangle()
+        {
+
+        }
     }
 }

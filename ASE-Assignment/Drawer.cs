@@ -62,12 +62,8 @@ namespace ase_assignment
             lastPosition = currentPosition;
             currentPosition = startingPosition;
         }
-        public void Pen(string colour)
-        {
-
-        }
         public void SetCurrentPosition(Point curPos, Point targetPos)
-        {
+        { 
             lastPosition = curPos;
             currentPosition = targetPos;
         }
