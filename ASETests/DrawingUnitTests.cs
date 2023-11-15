@@ -45,11 +45,12 @@ namespace ASETests
         {
             Drawer drawer = new Drawer();
 
+            int[] startingPosition = { 0, 0 };
             drawer.DrawTo(50, 50);
             drawer.Reset();
             int[] currentPosition = drawer.GetCurrentPosition();
 
-            Assert.AreEqual(currentPosition, drawer.startingPosition);
+            Assert.IsTrue(currentPosition.SequenceEqual(startingPosition));
         }
 
     }
