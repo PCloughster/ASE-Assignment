@@ -38,7 +38,6 @@
             errorConsole = new TextBox();
             saveProgramDialog = new SaveFileDialog();
             loadProgramDialog = new OpenFileDialog();
-            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)drawingArea).BeginInit();
             SuspendLayout();
             // 
@@ -138,23 +137,12 @@
             // 
             loadProgramDialog.Filter = "text document|*.txt";
             // 
-            // button1
-            // 
-            button1.Location = new Point(959, 1013);
-            button1.Name = "button1";
-            button1.Size = new Size(112, 34);
-            button1.TabIndex = 8;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.AppWorkspace;
             ClientSize = new Size(1910, 1347);
-            Controls.Add(button1);
             Controls.Add(errorConsole);
             Controls.Add(drawingArea);
             Controls.Add(saveButton);
@@ -183,6 +171,5 @@
         private TextBox errorConsole;
         private SaveFileDialog saveProgramDialog;
         private OpenFileDialog loadProgramDialog;
-        private Button button1;
     }
 }

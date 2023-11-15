@@ -9,6 +9,7 @@ namespace ase_assignment
     public class Circle : Shape
     {
         int radius;
+        string shape = "circle";
         public Circle(Color colour, Boolean fillType, int x, int y, int radius) : base(colour, fillType, x, y)
         {
             this.radius = radius * 2;
@@ -31,7 +32,7 @@ namespace ase_assignment
 
         public override string ToString()
         {
-            return base.ToString() + "  " + this.radius;
+            return shape + ": "+base.ToString() + "  " + this.radius;
         }
     }
 }

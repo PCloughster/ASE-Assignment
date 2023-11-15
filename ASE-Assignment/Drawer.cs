@@ -66,13 +66,17 @@ namespace ase_assignment
         {
             if (shapetype == "triangle")
             {
-                shape = new Triangle(Color.Blue, false, 0, 0, 20, 20);
+                shape = new Triangle(Color.Blue, fillMode, currentPosition.X, currentPosition.Y, width, height);
                 if (graphics != null) { shape.Draw(graphics); }
             }
-            else
+            else if (shapetype == "rectangle")
             {
                  shape = new Rectangle(pn.Color, fillMode, currentPosition.X, currentPosition.Y, width, height);
                  if (graphics != null) { shape.Draw(graphics); }
+            }
+            else
+            {
+                
             }
         }
         public void DrawShape(string shapetype, int measurement)
@@ -84,7 +88,12 @@ namespace ase_assignment
             }
             else if (shapetype == "circle")
             {
-                shape = new Circle(pn.Color, fillMode, currentPosition.X, currentPosition.Y, measurement)
+                shape = new Circle(pn.Color, fillMode, currentPosition.X, currentPosition.Y, measurement);
+                if (graphics != null) { shape.Draw(graphics); }
+            }
+            else if (shapetype == "triangle")
+            {
+                shape = new Triangle(Color.Blue, fillMode, currentPosition.X, currentPosition.Y, measurement, measurement);
                 if (graphics != null) { shape.Draw(graphics); }
             }
         }

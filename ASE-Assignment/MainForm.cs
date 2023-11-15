@@ -4,18 +4,21 @@ namespace ase_assignment
 {
     public partial class MainForm : Form
     {
-        CommandParser commandParser = new CommandParser();
+        
         Drawer drawer = new Drawer();
+        CommandParser commandParser = new CommandParser();
         public MainForm()
         {
             InitializeComponent();
             drawer.SetGraphicsArea(drawingArea.Handle);
+            commandParser = new CommandParser(drawer);
         }
         private void singleLineConsole_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
                 commandParser.ParseSingleCommand(singleLineConsole.Text);
+                errorConsole.Text = commandParser.errorLog;
             }
         }
 
@@ -25,7 +28,7 @@ namespace ase_assignment
             if (syntaxValid == true)
             {
                 errorConsole.Text = "Syntax is correct.";
-                commandParser.ParseMultipleCommands(multiLineConsole.Text);
+                commandParser.ParseMultipleCommands(multiLineConsole.Text ,commandParser.SyntaxCheckProgram(multiLineConsole.Text));
             }
             else
             {
@@ -62,12 +65,6 @@ namespace ase_assignment
                 string loadedProgram = commandParser.LoadProgram(loadProgramDialog.FileName);
                 multiLineConsole.Text = loadedProgram;
             }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            drawer.SetGraphicsArea(drawingArea.Handle);
-            drawer.DrawTo(400, 400);
         }
     }
 }

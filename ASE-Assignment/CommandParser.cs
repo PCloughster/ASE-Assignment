@@ -12,34 +12,92 @@ namespace ase_assignment
     {
         public string? errorMessage;
         public string? errorLog;
-        int upperLimit = 150;
+        int upperLimit;
         string[]? parametersStr;
         string? lastCommand;
         string? lastProgram;
-        Boolean validCommand = true;
+        Boolean validCommand;
+        Boolean intParam;
+        Drawer drawer;
 
-        public int CheckCommand(string command)
+        public CommandParser(Drawer drawer)
         {
+            upperLimit = 900;
+            validCommand = true;
+            this.drawer = drawer;
+        }
+        public CommandParser()
+        {
+            upperLimit = 900;
+            validCommand = true;
+        }
+        public int CheckCommand(string command, bool runCommand, string[] parametersStr)
+        {
+            int[] parameters;
             int parametersRequired = 0;
+            
             switch (command)
             {
                 case "moveto":
+                    if (intParam == true) { parameters = Array.ConvertAll(parametersStr, int.Parse); }
+                    if (runCommand == true && intParam == true) { parameters = Array.ConvertAll(parametersStr, int.Parse);  this.drawer.MoveTo(parameters[0], parameters[1]); }
                     parametersRequired = 2;
+                    intParam = true;
                     break;
                 case "drawto":
+                    if (runCommand == true && intParam == true) { parameters = Array.ConvertAll(parametersStr, int.Parse); this.drawer.DrawTo(parameters[0], parameters[1]); }
                     parametersRequired = 2;
+                    intParam = true;
                     break;
                 case "clear":
+                    if (runCommand == true && intParam == true) { parameters = Array.ConvertAll(parametersStr, int.Parse); this.drawer.Clear(); }
                     parametersRequired = 0;
+                    intParam = true;
                     break;
                 case "reset":
+                    if (runCommand == true && intParam == true) { parameters = Array.ConvertAll(parametersStr, int.Parse); this.drawer.Reset(); }
                     parametersRequired = 0;
+                    intParam = true;
                     break;
                 case "pen":
+                    if (runCommand == true) { this.drawer.SetPenColour(parametersStr[0]); }
                     parametersRequired = 1;
+                    intParam = false;
                     break;
                 case "fill":
+                    if (runCommand == true && intParam == true) { parameters = Array.ConvertAll(parametersStr, int.Parse); this.drawer.ToggleFill(); }
                     parametersRequired = 0;
+                    intParam = true;
+                    break;
+                case "triangle":
+                    intParam = true;
+                    if (parametersStr.Length == 2)
+                    {
+                        if (runCommand == true && intParam == true) { parameters = Array.ConvertAll(parametersStr, int.Parse); this.drawer.DrawShape("triangle", parameters[0], parameters[1]); }
+                        parametersRequired = 2;
+                    }
+                    else if (parametersStr.Length == 1)
+                    {
+                        if (runCommand == true && intParam == true) { parameters = Array.ConvertAll(parametersStr, int.Parse); this.drawer.DrawShape("triangle", parameters[0]); }
+                        parametersRequired = 1;
+                    }
+                    break;
+                case "rectangle":
+                    if (parametersStr.Length == 2)
+                    {
+                        if (runCommand == true && intParam == true) { parameters = Array.ConvertAll(parametersStr, int.Parse); this.drawer.DrawShape("rectangle", parameters[0], parameters[1]); }
+                        parametersRequired = 2;
+                    }
+                    else if (parametersStr.Length == 1)
+                    {
+                        if (runCommand == true && intParam == true) { parameters = Array.ConvertAll(parametersStr, int.Parse); this.drawer.DrawShape("rectangle", parameters[0]); }
+                        parametersRequired = 1;
+                    }
+                    break;
+                case "circle":
+                    if (runCommand == true && intParam == true) { parameters = Array.ConvertAll(parametersStr, int.Parse); this.drawer.DrawShape("circle", parameters[0]); }
+                    parametersRequired = 1;
+                    intParam = true;
                     break;
                 default:
                     validCommand = false;
@@ -50,10 +108,15 @@ namespace ase_assignment
         }
         public void ParseLine(string line, Boolean runCommand)
         {
+            intParam = false;
             int[]? parameters;
             line = line.Trim().ToLower();
             string[] fullCommand = line.Split(' ');
             string command = fullCommand[0];
+            if (drawer == null)
+            {
+                runCommand = false;
+            }
             if (fullCommand.Length == 2)
             {
                 parametersStr = fullCommand[1].Split(',', '.');
@@ -64,17 +127,18 @@ namespace ase_assignment
                 parametersStr = fullCommand.Skip(1).ToArray();
                 parameters = Array.ConvertAll(parametersStr, int.Parse);
             }
-            CheckCommand(command);
-            if (ValidParams(parameters, CheckCommand(command)) == true && validCommand== true)
+            CheckCommand(command, false, parametersStr);
+            if (ValidParams(parametersStr, CheckCommand(command, false, parametersStr)) == true && validCommand== true)
             {
+                SetLastCommand(line);
                 if (runCommand == true)
                 {
-                    SetLastCommand(line);
+                    CheckCommand(command, true, parametersStr);
                 }
             }
             else
             {
-                if (ValidParams(parameters, CheckCommand(command)) == false)
+                if (ValidParams(parametersStr, CheckCommand(command, false, parametersStr)) == false)
                 {
                     throw new ArgumentOutOfRangeException(errorMessage);
                 }
@@ -84,31 +148,48 @@ namespace ase_assignment
                 }
             }
         }
-        public Boolean ValidParams(int[] parameters, int parametersRequired)
+        public Boolean ValidParams(string[] parametersStr, int parametersRequired)
         {
-            if (parametersRequired > 0)
+            int[] parameters;
+            if (intParam == true)
             {
-                if (parameters == null)
+                try
                 {
-                    errorMessage = "No parameters provided, required paramters = " + parametersRequired;
+                    parameters = Array.ConvertAll(parametersStr, int.Parse);
+                }
+                catch (Exception)
+                {
+                    errorMessage = "INT Parameters required, recieved string";
                     return false;
                 }
-                else if (parameters.Length == parametersRequired)
+                if (parametersRequired > 0)
                 {
-                    foreach (int parameter in parameters)
+                    if (parameters == null)
                     {
-                        if (parameter > upperLimit || parameter < 1)
-                        {
-                            errorMessage = "Parameter falls outside of reasonable range(1-" + upperLimit + ")";
-                            return false;
-                        }
+                        errorMessage = "No parameters provided, required paramters = " + parametersRequired;
+                        return false;
                     }
-                    return true;
+                    else if (parameters.Length == parametersRequired)
+                    {
+                        foreach (int parameter in parameters)
+                        {
+                            if (parameter > upperLimit || parameter < 0)
+                            {
+                                errorMessage = "Parameter falls outside of reasonable range(0-" + upperLimit + ")";
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                    else
+                    {
+                        errorMessage = "Invalid number of parameters provided for this command, required paramters = " + parametersRequired;
+                        return false;
+                    }
                 }
                 else
                 {
-                    errorMessage = "Invalid number of parameters provided for this command, required paramters = " + parametersRequired;
-                    return false;
+                    return true;
                 }
             }
             else
@@ -129,9 +210,17 @@ namespace ase_assignment
         }
         public void ParseSingleCommand(string userInput)
         {
-            ParseLine(userInput, true);
+            errorLog = "";
+            try
+            {
+                ParseLine(userInput, true);
+            }
+            catch (Exception)
+            {
+                errorLog += (errorMessage + Environment.NewLine);
+            }
         }
-        public void ParseMultipleCommands(string userInput)
+        public void ParseMultipleCommands(string userInput, Boolean syntaxCheck)
         {
             string[] commands = ProgramArray(userInput);
 
@@ -156,7 +245,7 @@ namespace ase_assignment
                 }
                 catch (Exception)
                 {
-                    errorLog+=("Line " + i + ":" + errorMessage + Environment.NewLine);
+                    errorLog+=("Line " + i + ": " + errorMessage + Environment.NewLine);
                     errors++;
                 }
                 i++;
@@ -188,6 +277,10 @@ namespace ase_assignment
         public string GetLastCommand()
         {
             return lastCommand;
+        }
+        public void SetDrawer(Drawer drawer)
+        {
+            this.drawer = drawer; 
         }
     }
 }

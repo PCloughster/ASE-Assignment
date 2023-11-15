@@ -23,7 +23,7 @@ namespace ASETests
             string userInput = "moveto 50.50"+ Environment.NewLine+
                                "drawto 26,70"+ Environment.NewLine+
                                "clear";
-            commandParser.ParseMultipleCommands(userInput);
+            commandParser.ParseMultipleCommands(userInput, commandParser.SyntaxCheckProgram(userInput));
 
             Assert.AreEqual(userInput, commandParser.GetLastProgram());
         }
@@ -63,22 +63,22 @@ namespace ASETests
 
         }
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
         public void TestInvalidCommands()
         {
             CommandParser commandParser = new CommandParser();
 
             string userInput = "nonsense 1,1";
             commandParser.ParseSingleCommand(userInput);
+            Assert.AreEqual("invalid command entered", commandParser.errorMessage);
         }
         [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TestInvalidParamaters()
         {
             CommandParser commandParser = new CommandParser();
 
             string userInput = "moveto 100000000 100000000";
             commandParser.ParseSingleCommand(userInput);
+            Assert.AreEqual("Parameter falls outside of reasonable range(0-900)", commandParser.errorMessage);
         }
 
     }

@@ -9,6 +9,7 @@ namespace ase_assignment
     public class Rectangle:Shape
     {
         int width, height;
+        string shape = "rectangle";
         public Rectangle(Color colour, Boolean fillType, int x, int y, int width, int height) : base(colour, fillType, x, y)
         {
             this.width = width;
@@ -36,7 +37,7 @@ namespace ase_assignment
 
         public override string ToString()
         {
-            return base.ToString()+"  "+this.width+","+this.height;
+            return shape+": "+base.ToString()+"  "+this.width+","+this.height;
         }
     }
 }

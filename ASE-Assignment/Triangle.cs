@@ -9,24 +9,34 @@ namespace ase_assignment
 {
     public class Triangle : Shape
     {
-        int sideLength1;
-        int sideLength2;
-        int height; 
-        Point[] points;
-        public Triangle(Color colour, Boolean fillType, int x, int y, int sideLength1, int sideLength2) : base(colour, fillType, x, y)
+        int side1;
+        int side2;
+        string shape = "triangle";
+        public Triangle(Color colour, Boolean fillType, int x, int y, int side1, int side2) : base(colour, fillType, x, y)
         {
-            this.sideLength1 = sideLength1;
-            this.sideLength2 = sideLength2;
-            Point point1 = new Point(x, y);
-            Point point2 = new Point(x+sideLength1, y);
-            Point point3 = new Point(x, y+sideLength2);
-
-            Point[] points = {point1, point2, point3};
-
+            this.side1 = side1;
+            this.side2 = side2;
+        }
+        public Triangle(Color colour, Boolean fillType, int x, int y, int side1) : base(colour, fillType, x, y)
+        {
+            this.side1 = side1;
+            this.side2 = side1;
         }
 
+        private Point[] SetPoints(int x, int y, int side1, int side2)
+        {
+            Point point1 = new Point(x, y);
+            Point point2 = new Point(x + side1, y);
+            Point point3 = new Point(x, y + side2);
+            Point[] points =
+            { 
+                point1 , point2 , point3
+            };
+            return points;
+        }
         public override void Draw(Graphics g)
         {
+            Point[] points = SetPoints(x, y, side1, side2);
             if (fillType == true)
             {
                 SolidBrush b = new SolidBrush(colour);
@@ -41,7 +51,7 @@ namespace ase_assignment
 
         public override string ToString()
         {
-            return base.ToString() + "  " + this.sideLength1 + this.sideLength2;
+            return shape+": "+base.ToString() + "  " + this.side1 + this.side2;
         }
     }
 }
