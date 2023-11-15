@@ -34,7 +34,6 @@ namespace ase_assignment
         public void SetGraphicsArea(IntPtr graphicsArea)
         {
             graphics = Graphics.FromHwnd(graphicsArea);
-            
         }
         public void MoveTo(int x, int y)
         {

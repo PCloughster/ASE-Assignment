@@ -7,7 +7,7 @@ namespace ASETests
     public class DrawingUnitTests
     {
         [TestMethod]
-        public void testPenMoves()
+        public void TestPenMoves()
         {
             Drawer drawer = new Drawer();
 
@@ -18,7 +18,7 @@ namespace ASETests
             Assert.IsTrue(expectedCoordinates.SequenceEqual(penCoordinates));
         }
         [TestMethod]
-        public void testPenDraws()
+        public void TestPenDraws()
         {
             Drawer drawer = new Drawer();
 
@@ -31,7 +31,7 @@ namespace ASETests
             Assert.IsTrue(expectedCoordinates.SequenceEqual(penCoordinates));
         }
         [TestMethod]
-        public void testClearFunctions()
+        public void TestClearFunctions()
         {
             Drawer drawer = new Drawer();
 
@@ -41,7 +41,7 @@ namespace ASETests
             Assert.IsTrue(drawer.isClear);
         }
         [TestMethod]
-        public void testResetFunctions()
+        public void TestResetFunctions()
         {
             Drawer drawer = new Drawer();
 
@@ -51,6 +51,18 @@ namespace ASETests
             int[] currentPosition = drawer.GetCurrentPosition();
 
             Assert.IsTrue(currentPosition.SequenceEqual(startingPosition));
+        }
+        [TestMethod]
+        public void TestPenColourChange()
+        {
+            Drawer drawer = new Drawer();
+
+            string initialColour = drawer.GetPenColour();
+            drawer.ChangePenColour("black");
+            string changedColour = drwaer.GetPenColour();
+
+            Assert.AreEqual(initialColour, changedColour);
+
         }
 
     }
