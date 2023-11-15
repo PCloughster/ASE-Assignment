@@ -63,6 +63,17 @@ namespace ASETests
             Assert.AreNotEqual("black", changedColour.ToLower());
 
         }
+        [TestMethod]
+        public void TestFillToggles()
+        {
+            Drawer drawer = new Drawer();
+
+            Boolean initialFillMode = drawer.GetFillMode();
+            drawer.ToggleFill();
+            Boolean finalFillMode = drawer.GetFillMode();
+
+            Assert.AreNotEqual(initialFillMode, finalFillMode);
+        }
 
     }
 }
