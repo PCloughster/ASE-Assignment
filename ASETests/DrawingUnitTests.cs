@@ -91,7 +91,14 @@ namespace ASETests
         [TestMethod]
         public void TestCircle()
         {
+            Drawer drawer = new Drawer();
 
+            Shape comparisonCircle = new Circle(Color.Blue, false, 0, 0, 20);
+            drawer.DrawShape("circle", 20);
+            Shape actualCircle = drawer.GetShape();
+            string comparisonCircleStr = comparisonCircle.ToString();
+            string actualCircleStr = actualCircle.ToString();
+            Assert.AreEqual(comparisonCircleStr, actualCircleStr);
         }
         [TestMethod]
         public void TestTriangle()
