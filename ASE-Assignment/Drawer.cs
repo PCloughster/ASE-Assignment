@@ -64,9 +64,10 @@ namespace ase_assignment
         }
         public void DrawShape(string shapetype, int width, int height) 
         {
-            if (shapetype != "rectangle")
+            if (shapetype == "triangle")
             {
-                // error needs to be passed back to commandParser
+                shape = new Triangle(Color.Blue, false, 0, 0, 20, 20);
+                if (graphics != null) { shape.Draw(graphics); }
             }
             else
             {

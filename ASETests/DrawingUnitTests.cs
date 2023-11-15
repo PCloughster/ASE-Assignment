@@ -105,7 +105,7 @@ namespace ASETests
         {
             Drawer drawer = new Drawer();
 
-            Shape comparisonTriangle = new Triangle(Color.Blue, false, 0, 0, 20);
+            Shape comparisonTriangle = new Triangle(Color.Blue, false, 0, 0, 20, 20);
             drawer.DrawShape("triangle", 20);
             Shape actualTriangle = drawer.GetShape();
             string comparisonTriangleStr = comparisonTriangle.ToString();
