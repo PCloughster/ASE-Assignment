@@ -13,9 +13,11 @@ namespace ase_assignment
         public Point startingPosition;
         public Boolean isClear;
 
+        Boolean fillMode;
         Point currentPosition;
         Point lastPosition;
         Pen pn;
+        
         
         public Drawer(IntPtr graphicsArea) {
             startingPosition = new Point(0, 0);
@@ -74,9 +76,13 @@ namespace ase_assignment
             int[] currentPositionArr = { currentPosition.X, currentPosition.Y }; 
             return currentPositionArr;
         }
-        public Boolean FillMode()
+        public void ToggleFill()
         {
-            return false;
+            fillMode = !fillMode;
+        }
+        public Boolean GetFillMode()
+        {
+            return fillMode;
         }
         public void SetPenColour(string colour)
         {
