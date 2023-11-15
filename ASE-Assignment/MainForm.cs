@@ -9,7 +9,7 @@ namespace ase_assignment
         public MainForm()
         {
             InitializeComponent();
-            drawer.setGraphicsArea(drawingArea.Handle);
+            drawer.SetGraphicsArea(drawingArea.Handle);
         }
         private void singleLineConsole_KeyDown(object sender, KeyEventArgs e)
         {
@@ -66,7 +66,7 @@ namespace ase_assignment
 
         private void button1_Click(object sender, EventArgs e)
         {
-            drawer.setGraphicsArea(drawingArea.Handle);
+            drawer.SetGraphicsArea(drawingArea.Handle);
             drawer.DrawTo(400, 400);
         }
     }

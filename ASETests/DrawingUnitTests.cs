@@ -1,4 +1,5 @@
 ﻿using ase_assignment;
+using System.Drawing;
 
 namespace ASETests
 {
@@ -12,14 +13,15 @@ namespace ASETests
 
             drawer.MoveTo(50,50);
             int[] penCoordinates = drawer.GetCurrentPosition();
-            int[] expectedCoordinates = { 50, 50 };
+            int[] expectedCoordinates = {50,50};
 
-            Assert.AreEqual(expectedCoordinates, penCoordinates);
+            Assert.IsTrue(expectedCoordinates.SequenceEqual(penCoordinates));
         }
         [TestMethod]
         public void testPenDraws()
         {
             Drawer drawer = new Drawer();
+
             drawer.Clear();
             drawer.DrawTo(50, 50);
             Boolean isEmpty = drawer.graphics.IsClipEmpty;
@@ -30,6 +32,7 @@ namespace ASETests
         public void testClearFunctions()
         {
             Drawer drawer = new Drawer();
+
             drawer.DrawTo(50, 50);
             drawer.Clear();
             Boolean isEmpty = drawer.graphics.IsClipEmpty;
@@ -40,6 +43,7 @@ namespace ASETests
         public void testResetFunctions()
         {
             Drawer drawer = new Drawer();
+
             drawer.DrawTo(50, 50);
             drawer.Reset();
             int[] currentPosition = drawer.GetCurrentPosition();

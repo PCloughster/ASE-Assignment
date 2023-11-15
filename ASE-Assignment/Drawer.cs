@@ -27,7 +27,8 @@ namespace ase_assignment
         }
         public void MoveTo(int x, int y)
         {
-            
+           Point targetPos = new Point(x, y);
+           SetCurrentPosition(currentPosition, targetPos);
         }
         public void DrawTo(int x, int y) 
         {
@@ -41,20 +42,21 @@ namespace ase_assignment
         }
         public void Reset()
         {
-
+            lastPosition = currentPosition;
+            currentPosition = startingPosition;
         }
         public void Pen(string colour)
         {
 
         }
-        public void SetCurrentPosition(Point currentPosition, Point targetPos)
+        public void SetCurrentPosition(Point curPos, Point targetPos)
         {
-            lastPosition = currentPosition;
-            currentPosition = targetPos
+            lastPosition = curPos;
+            currentPosition = targetPos;
         }
         public int[] GetCurrentPosition()
         {
-            int[] currentPositionArr = {currentPosition.X} 
+            int[] currentPositionArr = { currentPosition.X, currentPosition.Y }; 
             return currentPositionArr;
         }
         public Boolean FillMode()
