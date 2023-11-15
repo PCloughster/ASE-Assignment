@@ -74,6 +74,19 @@ namespace ase_assignment
                  if (graphics != null) { shape.Draw(graphics); }
             }
         }
+        public void DrawShape(string shapetype, int measurement)
+        {
+            if (shapetype == "rectangle")
+            {
+                shape = new Rectangle(pn.Color, fillMode, currentPosition.X, currentPosition.Y, measurement);
+                if (graphics != null) { shape.Draw(graphics); }
+            }
+            else if (shapetype == "circle")
+            {
+                shape = new Circle(pn.Color, fillMode, currentPosition.X, currentPosition.Y, measurement)
+                if (graphics != null) { shape.Draw(graphics); }
+            }
+        }
         public void SetCurrentPosition(Point curPos, Point targetPos)
         { 
             lastPosition = curPos;

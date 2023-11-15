@@ -14,6 +14,11 @@ namespace ase_assignment
             this.width = width;
             this.height = height;
         }
+        public Rectangle(Color colour, Boolean fillType, int x, int y, int width) : base(colour, fillType, x, y)
+        {
+            this.width = width;
+            this.height = width;
+        }
 
         public override void Draw(Graphics g)
         {
