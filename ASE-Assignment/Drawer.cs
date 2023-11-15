@@ -17,12 +17,14 @@ namespace ase_assignment
         Point currentPosition;
         Point lastPosition;
         Pen pn;
-        
-        
+        Rectangle rectangle;
+
+
+
         public Drawer(IntPtr graphicsArea) {
             startingPosition = new Point(0, 0);
             currentPosition = startingPosition;
-            pn = new Pen(Color.Blue, 5);
+            pn = new Pen(Color.Blue, 2);
             isClear = true;
             SetGraphicsArea(graphicsArea);
         }
@@ -61,6 +63,17 @@ namespace ase_assignment
         {
             lastPosition = currentPosition;
             currentPosition = startingPosition;
+        }
+        public void DrawShape(string shapetype, int width, int height) 
+        {
+            if (shapetype != "rectangle")
+            {
+                // error needs to be passed back to commandParser
+            }
+            else
+            {
+                 
+            }
         }
         public void SetCurrentPosition(Point curPos, Point targetPos)
         { 

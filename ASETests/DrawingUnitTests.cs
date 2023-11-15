@@ -1,6 +1,7 @@
 ﻿using ase_assignment;
 using System.Drawing;
 using System.Reflection.Metadata;
+using Rectangle = ase_assignment.Rectangle;
 
 namespace ASETests
 {
@@ -79,7 +80,7 @@ namespace ASETests
         public void TestRectangle()
         {
             Drawer drawer = new Drawer();
-            Rectangle comparisonRectangle;
+            Rectangle comparisonRectangle = new Rectangle(Color.Blue, false, 0, 0, 20, 20);
 
             drawer.DrawShape("rectangle", 20, 20);
             Rectangle actualRectangle = drawer.GetShape();
