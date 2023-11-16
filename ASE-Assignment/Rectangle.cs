@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ase_assignment
 {
     /// <summary>
-    /// Class for the Rectangle object inherits from Shape.cs
+    /// Class for the Rectangle object, inherits from Shape.cs
     /// </summary>
     public class Rectangle:Shape
     {
@@ -17,7 +17,7 @@ namespace ase_assignment
         /// constructor for a rectangle taking height and width measurements
         /// </summary>
         /// <param name="colour">colour of rectangle</param>
-        /// <param name="fillType">is triangle filled</param>
+        /// <param name="fillType">is rectangle filled</param>
         /// <param name="x">X coordinate</param>
         /// <param name="y">Y coordinate</param>
         /// <param name="width">width of rectangle</param>
@@ -31,7 +31,7 @@ namespace ase_assignment
         /// constructor for a rectangle taking only the width measurement to draw a square, height is set to be equal to the width
         /// </summary>
         /// <param name="colour">colour of rectangle</param>
-        /// <param name="fillType">is triangle filled</param>
+        /// <param name="fillType">is rectangle filled</param>
         /// <param name="x">X coordinate</param>
         /// <param name="y">Y coordinate</param>
         /// <param name="width">width of rectangle</param>

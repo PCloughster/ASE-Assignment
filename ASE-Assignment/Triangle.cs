@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ase_assignment
 {
     /// <summary>
-    /// Class for the Triangle object inherits from Shape.cs
+    /// Class for the Triangle object, inherits from Shape.cs
     /// </summary>
     public class Triangle : Shape
     {
