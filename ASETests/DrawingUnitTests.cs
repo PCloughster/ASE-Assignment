@@ -5,9 +5,15 @@ using Rectangle = ase_assignment.Rectangle;
 
 namespace ASETests
 {
+    /// <summary>
+    /// Class used to test Drawer and Shape class functionality
+    /// </summary>
     [TestClass]
     public class DrawingUnitTests
     {
+        /// <summary>
+        /// Tests the MoveTo method by confirming that the coordinates are updated as expected
+        /// </summary>
         [TestMethod]
         public void TestPenMoves()
         {
@@ -19,6 +25,9 @@ namespace ASETests
 
             Assert.IsTrue(expectedCoordinates.SequenceEqual(penCoordinates));
         }
+        /// <summary>
+        /// Tests the DrawTo method by confirming if canvas is still clear and if the coordinates have updated as expected
+        /// </summary>
         [TestMethod]
         public void TestPenDraws()
         {
@@ -32,6 +41,9 @@ namespace ASETests
             Assert.IsFalse(drawer.isClear);
             Assert.IsTrue(expectedCoordinates.SequenceEqual(penCoordinates));
         }
+        /// <summary>
+        /// Tests the clear method by drawing, clearing, and then confirming if the canvas is clear
+        /// </summary>
         [TestMethod]
         public void TestClearFunctions()
         {
@@ -42,6 +54,9 @@ namespace ASETests
 
             Assert.IsTrue(drawer.isClear);
         }
+        /// <summary>
+        /// Tests the reset method by moving, then reseting and confirming if coordinates match the starting position
+        /// </summary>
         [TestMethod]
         public void TestResetFunctions()
         {
@@ -54,6 +69,9 @@ namespace ASETests
 
             Assert.IsTrue(currentPosition.SequenceEqual(startingPosition));
         }
+        /// <summary>
+        /// Tests the SetPenColour method by changing the pen colour and confirming the changed colour isn't the same as the initial one
+        /// </summary>
         [TestMethod]
         public void TestPenColourChange()
         {
@@ -65,6 +83,9 @@ namespace ASETests
             Assert.AreNotEqual("black", changedColour.ToLower());
 
         }
+        /// <summary>
+        /// Tests ToggleFill method by recording initial toggle boolean, toggling and then asserting not equal
+        /// </summary>
         [TestMethod]
         public void TestFillToggles()
         {
@@ -76,6 +97,9 @@ namespace ASETests
 
             Assert.AreNotEqual(initialFillMode, finalFillMode);
         }
+        /// <summary>
+        /// Tests DrawShape by constructing a rectangle to the desired specifications, running drawshape with the same specifications and comparing results
+        /// </summary>
         [TestMethod]
         public void TestRectangle()
         {
@@ -88,6 +112,9 @@ namespace ASETests
             string actualRectangleStr = actualRectangle.ToString();
             Assert.AreEqual(comparisonRectangleStr, actualRectangleStr);
         }
+        /// <summary>
+        /// Tests DrawShape by constructing a circle to the desired specifications, running drawshape with the same specifications and comparing results
+        /// </summary>
         [TestMethod]
         public void TestCircle()
         {
@@ -100,6 +127,9 @@ namespace ASETests
             string actualCircleStr = actualCircle.ToString();
             Assert.AreEqual(comparisonCircleStr, actualCircleStr);
         }
+        /// <summary>
+        /// Tests DrawShape by constructing a triangle to the desired specifications, running drawshape with the same specifications and comparing results
+        /// </summary>
         [TestMethod]
         public void TestTriangle()
         {
