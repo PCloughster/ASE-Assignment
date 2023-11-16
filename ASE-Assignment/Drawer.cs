@@ -117,7 +117,32 @@ namespace ase_assignment
         }
         public void SetPenColour(string colour)
         {
-            pn.Color = Color.FromName(colour);
+            switch (colour)
+            {
+                case "red":
+                    pn.Color = Color.Red;
+                    break;
+                case "blue":
+                    pn.Color = Color.Blue;
+                    break;
+                case "green":
+                    pn.Color = Color.Green;
+                    break;
+                case "pink":
+                    pn.Color = Color.Pink;
+                    break;
+                case "orange":
+                    pn.Color = Color.Orange;
+                    break;
+                case "yellow":
+                    pn.Color = Color.Yellow;
+                    break;
+                case "purple":
+                    pn.Color = Color.Purple;
+                    break;
+                default:
+                    throw new ArgumentException("invalid colour parameter");
+            }
         }
         public string GetPenColour()
         {

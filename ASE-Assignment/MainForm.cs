@@ -4,7 +4,7 @@ namespace ase_assignment
 {
     public partial class MainForm : Form
     {
-        
+
         Drawer drawer = new Drawer();
         CommandParser commandParser = new CommandParser();
         public MainForm()
@@ -28,7 +28,7 @@ namespace ase_assignment
             if (syntaxValid == true)
             {
                 errorConsole.Text = "Syntax is correct.";
-                commandParser.ParseMultipleCommands(multiLineConsole.Text ,commandParser.SyntaxCheckProgram(multiLineConsole.Text));
+                commandParser.ParseMultipleCommands(multiLineConsole.Text, commandParser.SyntaxCheckProgram(multiLineConsole.Text));
             }
             else
             {

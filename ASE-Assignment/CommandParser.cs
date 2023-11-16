@@ -35,7 +35,7 @@ namespace ase_assignment
         {
             int[] parameters;
             int parametersRequired = 0;
-            
+            validCommand = true;
             switch (command)
             {
                 case "moveto":
@@ -120,15 +120,15 @@ namespace ase_assignment
             if (fullCommand.Length == 2)
             {
                 parametersStr = fullCommand[1].Split(',', '.');
-                parameters = Array.ConvertAll(parametersStr, int.Parse);
+            //    parameters = Array.ConvertAll(parametersStr, int.Parse);
             }
             else
             {
                 parametersStr = fullCommand.Skip(1).ToArray();
-                parameters = Array.ConvertAll(parametersStr, int.Parse);
+            //    parameters = Array.ConvertAll(parametersStr, int.Parse);
             }
             CheckCommand(command, false, parametersStr);
-            if (ValidParams(parametersStr, CheckCommand(command, false, parametersStr)) == true && validCommand== true)
+            if (ValidParams(parametersStr, CheckCommand(command, false, parametersStr)) == true && validCommand == true)
             {
                 SetLastCommand(line);
                 if (runCommand == true)
@@ -194,7 +194,24 @@ namespace ase_assignment
             }
             else
             {
-                return true;
+                if (parametersRequired > 0)
+                {
+                    if (parametersStr == null)
+                    {
+                        errorMessage = "No parameters provided, required paramters = " + parametersRequired;
+                        return false;
+                    }
+                    else if (parametersStr.Length == parametersRequired)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        errorMessage = "Invalid number of parameters provided for this command, required paramters = " + parametersRequired;
+                        return false;
+                    }
+                }
+                else { return true; }
             }
         }
         public void SaveProgram(string fileName, string[] currentProgram)
@@ -215,9 +232,9 @@ namespace ase_assignment
             {
                 ParseLine(userInput, true);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                errorLog += (errorMessage + Environment.NewLine);
+                errorLog += (e + errorMessage + Environment.NewLine);
             }
         }
         public void ParseMultipleCommands(string userInput, Boolean syntaxCheck)
