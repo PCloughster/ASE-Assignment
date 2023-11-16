@@ -2,9 +2,15 @@ using ase_assignment;
 
 namespace ASETests
 {
+    /// <summary>
+    /// Class used to test command parser functionality
+    /// </summary>
     [TestClass]
     public class CommandParserTests
     {
+        /// <summary>
+        /// Method used to confirm whether the ParseSingleCommand method is case sensitive
+        /// </summary>
         [TestMethod]
         public void TestCaseSensitive_SingleCommand()
         {
@@ -15,6 +21,9 @@ namespace ASETests
 
             Assert.AreEqual("moveto 50,50", commandParser.GetLastCommand());
         }
+        /// <summary>
+        /// Confirms whether  the user input is read correctly by the program by comparing it to the inital string
+        /// </summary>
         [TestMethod]
         public void TestFunctional_MultiLine()
         {
@@ -23,11 +32,13 @@ namespace ASETests
             string userInput = "moveto 50.50"+ Environment.NewLine+
                                "drawto 26,70"+ Environment.NewLine+
                                "clear";
-            commandParser.ParseMultipleCommands(userInput, commandParser.SyntaxCheckProgram(userInput));
+            commandParser.ParseMultipleCommands(userInput);
 
             Assert.AreEqual(userInput, commandParser.GetLastProgram());
         }
-
+        /// <summary>
+        /// Test method which uses the SaveProgram method from command parser and then reads the file back to confirm whether it has been saved correctly
+        /// </summary>
         [TestMethod]
         public void TestSave()
         {
@@ -45,6 +56,9 @@ namespace ASETests
             File.Delete("test1.txt");
 
         }
+        /// <summary>
+        /// Test method which saves a file then tests the LoadProgram method to see if the saved program is the same as the initial string
+        /// </summary>
         [TestMethod]
         public void TestLoad()
         {
@@ -62,6 +76,9 @@ namespace ASETests
             File.Delete("test2.txt");
 
         }
+        /// <summary>
+        /// enters an invalid command to see if an error message is recieved
+        /// </summary>
         [TestMethod]
         public void TestInvalidCommands()
         {
@@ -71,6 +88,9 @@ namespace ASETests
             commandParser.ParseSingleCommand(userInput);
             Assert.AreEqual("invalid command entered", commandParser.errorMessage);
         }
+        /// <summary>
+        /// enters out of scope parameter to confirm if an error message is recieved
+        /// </summary>
         [TestMethod]
         public void TestInvalidParamaters()
         {
