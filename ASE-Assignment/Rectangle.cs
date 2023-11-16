@@ -9,7 +9,7 @@ namespace ase_assignment
     /// <summary>
     /// Class for the Rectangle object, inherits from Shape.cs
     /// </summary>
-    public class Rectangle:Shape
+    public class Rectangle : Shape
     {
         int width, height;
         string shape = "rectangle";

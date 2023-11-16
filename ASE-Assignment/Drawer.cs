@@ -134,7 +134,7 @@ namespace ase_assignment
             }
             else if (shapetype == "triangle")
             {
-                shape = new Triangle(Color.Blue, fillMode, currentPosition.X, currentPosition.Y, measurement, measurement);
+                shape = new Triangle(Color.Blue, fillMode, currentPosition.X, currentPosition.Y, measurement);
                 if (graphics != null) { shape.Draw(graphics); }
             }
         }

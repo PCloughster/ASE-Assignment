@@ -93,6 +93,7 @@ namespace ase_assignment
                     }
                     break;
                 case "rectangle":
+                    intParam = true;
                     if (parametersStr.Length == 2)
                     {
                         if (runCommand == true && intParam == true) { parameters = Array.ConvertAll(parametersStr, int.Parse); this.drawer.DrawShape("rectangle", parameters[0], parameters[1]); }
