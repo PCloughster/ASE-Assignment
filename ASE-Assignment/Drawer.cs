@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ase_assignment
 {
+    /// <summary>
+    /// Drawer is the class which contains all methods relating to graphics drawing
+    /// </summary>
     public class Drawer
     {
         public Graphics graphics;

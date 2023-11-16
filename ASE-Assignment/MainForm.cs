@@ -28,7 +28,7 @@ namespace ase_assignment
             if (syntaxValid == true)
             {
                 errorConsole.Text = "Syntax is correct.";
-                commandParser.ParseMultipleCommands(multiLineConsole.Text, commandParser.SyntaxCheckProgram(multiLineConsole.Text));
+                commandParser.ParseMultipleCommands(multiLineConsole.Text);
             }
             else
             {

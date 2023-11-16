@@ -8,6 +8,9 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace ase_assignment
 {
+    /// <summary>
+    /// CommandParser contains all methods relating to interpreting commands from the user and relaying this information to the appropriate methods.
+    /// </summary>
     public class CommandParser
     {
         public string? errorMessage;
@@ -31,6 +34,13 @@ namespace ase_assignment
             upperLimit = 900;
             validCommand = true;
         }
+        /// <summary>
+        /// the CheckCommand method is used both to check command validity and call upon the Drawer class to execute the commands.
+        /// </summary>
+        /// <param name="command">command to be checked or run</param>
+        /// <param name="runCommand">if false commands are only syntaxed checked and not run</param>
+        /// <param name="parametersStr">parameters string from user input</param>
+        /// <returns></returns>
         public int CheckCommand(string command, bool runCommand, string[] parametersStr)
         {
             int[] parameters;
@@ -106,10 +116,16 @@ namespace ase_assignment
             }
             return parametersRequired;
         }
+        /// <summary>
+        /// ParseLine is used to parse a line of user input, format the data and pass it to ValidParams and CheckCommand for testing. Once the line is confirmed as valid the method will pass the line back to CheckCommand for it to be ran.
+        /// </summary>
+        /// <param name="line">full command line to parse</param>
+        /// <param name="runCommand">boolean that determines whether the line needs to be ran</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if parameters themselves are invalid</exception>
+        /// <exception cref="ArgumentException">Thrown if command isn't recognised</exception>
         public void ParseLine(string line, Boolean runCommand)
         {
             intParam = false;
-            int[]? parameters;
             line = line.Trim().ToLower();
             string[] fullCommand = line.Split(' ');
             string command = fullCommand[0];
@@ -120,12 +136,10 @@ namespace ase_assignment
             if (fullCommand.Length == 2)
             {
                 parametersStr = fullCommand[1].Split(',', '.');
-            //    parameters = Array.ConvertAll(parametersStr, int.Parse);
             }
             else
             {
                 parametersStr = fullCommand.Skip(1).ToArray();
-            //    parameters = Array.ConvertAll(parametersStr, int.Parse);
             }
             CheckCommand(command, false, parametersStr);
             if (ValidParams(parametersStr, CheckCommand(command, false, parametersStr)) == true && validCommand == true)
@@ -148,6 +162,12 @@ namespace ase_assignment
                 }
             }
         }
+        /// <summary>
+        /// Confirms if parameters are valid for a command and saves an error message to errorMessage if required
+        /// </summary>
+        /// <param name="parametersStr">Parameters passed into method</param>
+        /// <param name="parametersRequired">integer containing number of parameters required by the command</param>
+        /// <returns>true or false to confirm if parameters are valid</returns>
         public Boolean ValidParams(string[] parametersStr, int parametersRequired)
         {
             int[] parameters;
@@ -214,10 +234,20 @@ namespace ase_assignment
                 else { return true; }
             }
         }
+        /// <summary>
+        /// writes the program from array form to a file
+        /// </summary>
+        /// <param name="fileName">file the program is saved in</param>
+        /// <param name="currentProgram">array containing each line of the current program</param>
         public void SaveProgram(string fileName, string[] currentProgram)
         {
             File.WriteAllLines(fileName, currentProgram);
         }
+        /// <summary>
+        /// Loads program from .txt file to the current window
+        /// </summary>
+        /// <param name="programName">file name for saved program</param>
+        /// <returns>full program as a string</returns>
         public string LoadProgram(string programName)
         {
             string lines = "";
@@ -225,6 +255,10 @@ namespace ase_assignment
             lines = string.Join(Environment.NewLine, program);
             return lines;
         }
+        /// <summary>
+        /// Clears the error log then parses the single command input by the user
+        /// </summary>
+        /// <param name="userInput"></param>
         public void ParseSingleCommand(string userInput)
         {
             errorLog = "";
@@ -237,7 +271,11 @@ namespace ase_assignment
                 errorLog += (e + errorMessage + Environment.NewLine);
             }
         }
-        public void ParseMultipleCommands(string userInput, Boolean syntaxCheck)
+        /// <summary>
+        /// Parses program from multi-line window and sets last run program
+        /// </summary>
+        /// <param name="userInput">string containing all instructions</param>
+        public void ParseMultipleCommands(string userInput)
         {
             string[] commands = ProgramArray(userInput);
 
@@ -248,6 +286,11 @@ namespace ase_assignment
             }
 
         }
+        /// <summary>
+        /// method which checks the syntax of a program passed to it without running any commands
+        /// </summary>
+        /// <param name="program">string containing the program</param>
+        /// <returns></returns>
         public Boolean SyntaxCheckProgram(String program)
         {
             string[] commands = ProgramArray(program);
@@ -273,28 +316,53 @@ namespace ase_assignment
             }
             else { return true; }
         }
+        /// <summary>
+        /// Converts the program string to an array 
+        /// </summary>
+        /// <param name="program">program string input</param>
+        /// <returns>program array output</returns>
         public string[] ProgramArray(string program)
         {
             string[] commandArray = program.Split(Environment.NewLine);
             commandArray = commandArray.Where(x => !string.IsNullOrEmpty(x)).ToArray();
             return commandArray;
         }
+        /// <summary>
+        /// sets a string to contain the last program to be run
+        /// </summary>
+        /// <param name="program">last program run</param>
         public void SetLastProgram(string program)
         {
             lastProgram = program;
         }
+        /// <summary>
+        /// Returns the last program run
+        /// </summary>
+        /// <returns>last run program</returns>
         public string GetLastProgram()
         {
             return lastProgram;
         }
+        /// <summary>
+        /// sets the last command run to the string input
+        /// </summary>
+        /// <param name="command">command to set as last command</param>
         public void SetLastCommand(string command)
         {
             lastCommand = command;
         }
+        /// <summary>
+        /// primarily used for testing returns last run command
+        /// </summary>
+        /// <returns></returns>
         public string GetLastCommand()
         {
             return lastCommand;
         }
+        /// <summary>
+        /// sets the drawrer object to be used if not already defined
+        /// </summary>
+        /// <param name="drawer">drawer object to be used</param>
         public void SetDrawer(Drawer drawer)
         {
             this.drawer = drawer; 
