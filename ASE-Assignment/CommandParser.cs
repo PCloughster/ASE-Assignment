@@ -110,7 +110,35 @@ namespace ase_assignment
                     parametersRequired = 1;
                     intParam = true;
                     break;
+                case "if":
+                    intParam = true;
+                    // get line that command starts on 
+                    // store line in something like LanguageCommands.setStartLine
+                    break;
+                case "endif":
+                    intParam = true;
+                    // get line this happens on then store the line this ends on
+                    break;
+                case "loop":
+                    intParam = true;
+
+                    break;
+                case "endloop":
+                    intParam = true;
+
+                    break;
+                case "method":
+                    intParam = true;
+
+                    break;
+                case "endmethod":
+                    intParam = true;
+
+                    break;
                 default:
+                    // we can put some bullshit here to parse the variable assignment
+                    // so like if line contains an = sign then do setting the variable shouldn't be too fucking hard really
+                    // 
                     validCommand = false;
                     errorMessage = "invalid command entered";
                     break;
