@@ -24,6 +24,7 @@ namespace ase_assignment
         Boolean validCommand;
         Boolean intParam;
         Drawer drawer;
+        Boolean variableOveride = false; 
 
         public CommandParser(Drawer drawer)
         {
@@ -48,6 +49,7 @@ namespace ase_assignment
             int[] parameters;
             int parametersRequired = 0;
             validCommand = true;
+            variableOveride = false;
             switch (command)
             {
                 case "moveto":
@@ -132,7 +134,7 @@ namespace ase_assignment
                     break;
                 case "method":
                     intParam = true;
-                    .
+                    
 
                     break;
                 case "endmethod":
@@ -146,40 +148,176 @@ namespace ase_assignment
 
                     if (line.Contains("="))
                     {
+                        variableOveride = true;
+                        parametersRequired = 0;
                         intParam = true;
                         string[] commandArray;
                         string[] operation;
-                        commandArray = line.Split('=');
+                        int value;
+                        int prevValue;
+                        string trimmedLine = line.Replace(" ", "");
+                        commandArray = trimmedLine.Split('=');
                         if (commandArray.Length == 2)
                         {
-
+                            commandArray[1] = commandArray[1].ToLower().Trim();
                             if (commandArray[1].Contains("+"))
                             {
                                 operation = commandArray[1].Split("+");
+                                operation = PullVariable(operation);
+                                if (operation.Length < 2)
+                                {
+                                    errorMessage = "Operator included but only one argument provided";
+                                    validCommand = false;
+                                    break;
+                                }
+                                else if (operation.Length == 2)
+                                {
+                                    try
+                                    {
+                                        value = int.Parse(operation[0]) + int.Parse(operation[1]);
+                                    }
+                                    catch 
+                                    {
+                                        validCommand = false;
+                                        errorMessage = "invalid arguments for attempted operation";
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    errorMessage = "Only two arguments supported by operators at this time";
+                                    validCommand = false;
+                                    break;
+                                }
                             }
                             else if (commandArray[1].Contains("-"))
                             {
-
+                                operation = commandArray[1].Split("-");
+                                operation = PullVariable(operation);
+                                if (operation.Length < 2)
+                                {
+                                    errorMessage = "Operator included but only one argument provided";
+                                    validCommand = false;
+                                    break;
+                                }
+                                else if (operation.Length == 2)
+                                {
+                                    try
+                                    {
+                                        value = int.Parse(operation[0]) - int.Parse(operation[1]);
+                                    }
+                                    catch
+                                    {
+                                        validCommand = false;
+                                        errorMessage = "invalid arguments for attempted operation";
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    errorMessage = "Only two arguments supported by operators at this time";
+                                    validCommand = false;
+                                    break;
+                                }
                             }
                             else if (commandArray[1].Contains("*"))
                             {
-
+                                operation = commandArray[1].Split("*");
+                                operation = PullVariable(operation);
+                                if (operation.Length < 2)
+                                {
+                                    errorMessage = "Operator included but only one argument provided";
+                                    validCommand = false;
+                                    break;
+                                }
+                                else if (operation.Length == 2)
+                                {
+                                    try
+                                    {
+                                        value = int.Parse(operation[0]) * int.Parse(operation[1]);
+                                    }
+                                    catch
+                                    {
+                                        validCommand = false;
+                                        errorMessage = "invalid arguments for attempted operation";
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    errorMessage = "Only two arguments supported by operators at this time";
+                                    validCommand = false;
+                                    break;
+                                }
                             }
                             else if (commandArray[1].Contains("/"))
                             {
-
+                                operation = commandArray[1].Split("/");
+                                operation = PullVariable(operation);
+                                if (operation.Length < 2)
+                                {
+                                    errorMessage = "Operator included but only one argument provided";
+                                    validCommand = false;
+                                    break;
+                                }
+                                else if (operation.Length == 2)
+                                {
+                                    try
+                                    {
+                                        value = int.Parse(operation[0]) / int.Parse(operation[1]);
+                                    }
+                                    catch
+                                    {
+                                        validCommand = false;
+                                        errorMessage = "invalid arguments for attempted operation";
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    errorMessage = "Only two arguments supported by operators at this time";
+                                    validCommand = false;
+                                    break;
+                                }
                             }
                             else
                             {
-
+                                try
+                                {
+                                    if (variables.ContainsKey(commandArray[1]))
+                                    {
+                                        value = variables[commandArray[1]];
+                                    }
+                                    else
+                                    {
+                                        value = int.Parse(commandArray[1]);
+                                    }
+                                }
+                                catch
+                                {
+                                    validCommand = false;
+                                    errorMessage = "invalid integer or operation provided, cannot assign variable";
+                                    break;
+                                }
                             }
-                            if (variables.ContainsKey(commandArray[0])){
-                                variables[commandArray[0]] = int.Parse(commandArray[1]);
+
+                            if (variables.ContainsKey(commandArray[0]))
+                            {
+                                if (runCommand != true)
+                                {
+                                    validCommand = true;
+                                    break;
+                                }
+                                else
+                                {
+                                    variables[commandArray[0]] = value;
+                                }
                             }
                             else
                             {
-                                variables.Add(commandArray[0].Trim().ToLower(), int.Parse(commandArray[1]));
+                                variables.Add(commandArray[0].Trim().ToLower(), value);
                             }
+
                             // add item to dictionary commandArray[0] name commandArray[1] value
                             validCommand = true;
                             break;
@@ -264,14 +402,19 @@ namespace ase_assignment
         }
         /// <summary>
         /// Confirms if parameters are valid for a command and saves an error message to errorMessage if required
-        /// </summary>
+        /// </summary>   
         /// <param name="parametersStr">Parameters passed into method</param>
         /// <param name="parametersRequired">integer containing number of parameters required by the command</param>
         /// <returns>true or false to confirm if parameters are valid</returns>
         public Boolean ValidParams(string[] parametersStr, int parametersRequired)
         {
             int[] parameters;
-            if (intParam == true)
+            if (variableOveride == true)
+            {
+                //variableOveride = false;
+                return true;
+            }
+            else if (intParam == true)
             {
                 try
                 {
