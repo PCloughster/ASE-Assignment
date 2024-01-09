@@ -13,7 +13,7 @@ namespace ase_assignment
     /// </summary>
     public class CommandParser
     {
-        Dictionary<string, int> variables = new Dictionary<string, int>();
+        public Dictionary<string, int> variables = new Dictionary<string, int>();
         public string? errorMessage;
         public string? errorLog;
         int upperLimit;

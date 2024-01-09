@@ -100,6 +100,25 @@ namespace ASETests
             commandParser.ParseSingleCommand(userInput);
             Assert.AreEqual("Parameter falls outside of reasonable range(0-900)", commandParser.errorMessage);
         }
+        [TestMethod]
+        public void TestVariablesSave()
+        {
+            CommandParser commandParser = new CommandParser();
+            string userInput = "a=100";
 
+            commandParser.ParseSingleCommand(userInput);
+            Assert.AreEqual(100, commandParser.variables["a"]);
+        }
+        [TestMethod]
+        public void TestVariablesCanbeAdded()
+        {
+            CommandParser commandParser = new CommandParser();
+            string userInput = "a=100";
+            string userInput2 = "b=100+a";
+
+            commandParser.ParseSingleCommand(userInput);
+            commandParser.ParseSingleCommand(userInput2);
+            Assert.AreEqual(200, commandParser.variables["b"]);
+        }
     }
 }
