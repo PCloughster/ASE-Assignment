@@ -13,12 +13,14 @@ namespace ase_assignment
     /// </summary>
     public class CommandParser
     {
+        Dictionary<string, int> variables = new Dictionary<string, int>();
         public string? errorMessage;
         public string? errorLog;
         int upperLimit;
         string[]? parametersStr;
         string? lastCommand;
         string? lastProgram;
+        string[] currentProgram;
         Boolean validCommand;
         Boolean intParam;
         Drawer drawer;
@@ -41,7 +43,7 @@ namespace ase_assignment
         /// <param name="runCommand">if false commands are only syntaxed checked and not run</param>
         /// <param name="parametersStr">parameters string from user input</param>
         /// <returns></returns>
-        public int CheckCommand(string command, bool runCommand, string[] parametersStr)
+        public int CheckCommand(string command, bool runCommand, string[] parametersStr, string line)
         {
             int[] parameters;
             int parametersRequired = 0;
@@ -114,6 +116,7 @@ namespace ase_assignment
                     intParam = true;
                     // get line that command starts on 
                     // store line in something like LanguageCommands.setStartLine
+                    // have a counter to account for nesting loops for example for every if statement detected add 1 to counter and for every endif detected -1 only when counter is 0 record the line number the loop ends on
                     break;
                 case "endif":
                     intParam = true;
@@ -129,6 +132,7 @@ namespace ase_assignment
                     break;
                 case "method":
                     intParam = true;
+                    .
 
                     break;
                 case "endmethod":
@@ -137,11 +141,62 @@ namespace ase_assignment
                     break;
                 default:
                     // we can put some bullshit here to parse the variable assignment
-                    // so like if line contains an = sign then do setting the variable shouldn't be too fucking hard really
-                    // 
-                    validCommand = false;
-                    errorMessage = "invalid command entered";
-                    break;
+                    // so like if line contains an = sign then do setting the variable shouldn't be too fucking hard 
+                    // if line contains = take line, split at = sign [0] is name and [1] is value, save to dictionary
+
+                    if (line.Contains("="))
+                    {
+                        intParam = true;
+                        string[] commandArray;
+                        string[] operation;
+                        commandArray = line.Split('=');
+                        if (commandArray.Length == 2)
+                        {
+
+                            if (commandArray[1].Contains("+"))
+                            {
+                                operation = commandArray[1].Split("+");
+                            }
+                            else if (commandArray[1].Contains("-"))
+                            {
+
+                            }
+                            else if (commandArray[1].Contains("*"))
+                            {
+
+                            }
+                            else if (commandArray[1].Contains("/"))
+                            {
+
+                            }
+                            else
+                            {
+
+                            }
+                            if (variables.ContainsKey(commandArray[0])){
+                                variables[commandArray[0]] = int.Parse(commandArray[1]);
+                            }
+                            else
+                            {
+                                variables.Add(commandArray[0].Trim().ToLower(), int.Parse(commandArray[1]));
+                            }
+                            // add item to dictionary commandArray[0] name commandArray[1] value
+                            validCommand = true;
+                            break;
+                        }
+                        else
+                        {
+                            validCommand = false;
+                            errorMessage = "variable assignment attempted with too many parameters";
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        validCommand = false;
+                        errorMessage = "invalid command entered";
+                        break;
+                    }
             }
             return parametersRequired;
         }
@@ -155,6 +210,7 @@ namespace ase_assignment
         public void ParseLine(string line, Boolean runCommand)
         {
             intParam = false;
+            int x = 0;
             line = line.Trim().ToLower();
             string[] fullCommand = line.Split(' ');
             string command = fullCommand[0];
@@ -164,24 +220,24 @@ namespace ase_assignment
             }
             if (fullCommand.Length == 2)
             {
-                parametersStr = fullCommand[1].Split(',', '.');
+                parametersStr = PullVariable(fullCommand[1].Split(',', '.'));
             }
             else
             {
-                parametersStr = fullCommand.Skip(1).ToArray();
+                parametersStr = PullVariable(fullCommand.Skip(1).ToArray());
             }
-            CheckCommand(command, false, parametersStr);
-            if (ValidParams(parametersStr, CheckCommand(command, false, parametersStr)) == true && validCommand == true)
+            CheckCommand(command, false, parametersStr, line);
+            if (ValidParams(parametersStr, CheckCommand(command, false, parametersStr, line)) == true && validCommand == true)
             {
                 SetLastCommand(line);
                 if (runCommand == true)
                 {
-                    CheckCommand(command, true, parametersStr);
+                    CheckCommand(command, true, parametersStr, line);
                 }
             }
             else
             {
-                if (ValidParams(parametersStr, CheckCommand(command, false, parametersStr)) == false)
+                if (ValidParams(parametersStr, CheckCommand(command, false, parametersStr, line)) == false)
                 {
                     throw new ArgumentOutOfRangeException(errorMessage);
                 }
@@ -190,6 +246,21 @@ namespace ase_assignment
                     throw new ArgumentException(errorMessage);
                 }
             }
+        }
+
+        // replaces all instances of a variable in a string collection with the int the variable corresponds with
+        public string[] PullVariable(string[] parametersStr)
+        {
+            int x = 0;
+            foreach (string param in parametersStr)
+            {
+                if (variables.ContainsKey(param))
+                {
+                    parametersStr[x] = variables[param].ToString();
+                }
+                x++;
+            }
+            return parametersStr;
         }
         /// <summary>
         /// Confirms if parameters are valid for a command and saves an error message to errorMessage if required
@@ -307,13 +378,22 @@ namespace ase_assignment
         public void ParseMultipleCommands(string userInput)
         {
             string[] commands = ProgramArray(userInput);
-
+            SetCurrentProgram(commands);
             foreach (string command in commands)
             {
                 ParseLine(command, true);
                 SetLastProgram(userInput);
             }
 
+        }
+
+        public void SetCurrentProgram(string[] program)
+        {
+            currentProgram = program;
+        }
+        public string[] GetCurrentProgram()
+        {
+            return currentProgram;
         }
         /// <summary>
         /// method which checks the syntax of a program passed to it without running any commands
@@ -323,6 +403,7 @@ namespace ase_assignment
         public Boolean SyntaxCheckProgram(String program)
         {
             string[] commands = ProgramArray(program);
+            SetCurrentProgram(commands);
             errorLog = "";
             int i = 1;
             int errors = 0;
