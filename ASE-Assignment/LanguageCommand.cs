@@ -6,26 +6,33 @@ using System.Threading.Tasks;
 
 namespace ase_assignment
 {
-    internal class LanguageCommands
+    public abstract class LanguageCommand : Object
     {
         int startLine;
         int endLine;
+        public int counter = 0;
         string[] phrase;
         string[] program;
-        public LanguageCommands(string[] programU)
+        public LanguageCommand(string[] program, int startLine)
         {
-            program = programU;
+            this.program = program;
+            this.startLine = startLine - 1;
+            this.endLine = endLine - 1;
+            this.phrase = program[startLine..endLine];
         }
         
         public void RecordPharase(int startLine, int endLine, string[] program)
         {
-            phrase = program[startLine..endLine]; 
+            phrase = program[startLine..endLine];
+        }
+        public string[] ReturnPhrase()
+        {
+            return phrase;
         }
         public void SetStartLine(int lineNum)
         {
             startLine = lineNum;
         }
-
         public void SetEndLine(int lineNum)
         {
             endLine = lineNum;
@@ -38,10 +45,14 @@ namespace ase_assignment
         {
             return endLine;
         }
-        public void CheckCondition(string startLine)
+        public void IncreaseCounter()
         {
-
+            counter++;
         }
-
+        public void DecreaseCounter()
+        {
+            counter--;
+        }
+        public int GetCounter() { return counter; } 
     }
 }

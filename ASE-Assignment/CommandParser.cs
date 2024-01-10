@@ -24,7 +24,9 @@ namespace ase_assignment
         Boolean validCommand;
         Boolean intParam;
         Drawer drawer;
-        Boolean variableOveride = false; 
+        Boolean variableOveride = false;
+        int lineNumber;
+        int blockCounter = 0;
 
         public CommandParser(Drawer drawer)
         {
@@ -50,6 +52,7 @@ namespace ase_assignment
             int parametersRequired = 0;
             validCommand = true;
             variableOveride = false;
+            if (blockCounter != 0) { runCommand = false; }
             switch (command)
             {
                 case "moveto":
@@ -116,12 +119,17 @@ namespace ase_assignment
                     break;
                 case "if":
                     intParam = true;
+                    parametersRequired = 1;
+                    IfStatement ifStatement = new IfStatement(currentProgram, lineNumber);
+                    ifStatement.IncreaseCounter();
                     // get line that command starts on 
                     // store line in something like LanguageCommands.setStartLine
                     // have a counter to account for nesting loops for example for every if statement detected add 1 to counter and for every endif detected -1 only when counter is 0 record the line number the loop ends on
                     break;
                 case "endif":
                     intParam = true;
+
+                    ifStatement.DecreaseCounter();
                     // get line this happens on then store the line this ends on
                     break;
                 case "loop":
@@ -522,8 +530,10 @@ namespace ase_assignment
         {
             string[] commands = ProgramArray(userInput);
             SetCurrentProgram(commands);
+            lineNumber = 0;
             foreach (string command in commands)
             {
+                lineNumber++;
                 ParseLine(command, true);
                 SetLastProgram(userInput);
             }
