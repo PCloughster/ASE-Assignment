@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -13,7 +14,7 @@ namespace ase_assignment
     /// </summary>
     public class CommandParser
     {
-        public Dictionary<string, int> variables = new Dictionary<string, int>();
+        public static Dictionary<string, int> variables = new Dictionary<string, int>();
         public string? errorMessage;
         public string? errorLog;
         int upperLimit;
@@ -25,8 +26,12 @@ namespace ase_assignment
         Boolean intParam;
         Drawer drawer;
         Boolean variableOveride = false;
-        int lineNumber;
-        int blockCounter = 0;
+        int lineNumber = 0;
+        int blockCounter;
+        IfStatement whileLoop;
+        IfStatement ifStatement;
+        string varName;
+
 
         public CommandParser(Drawer drawer)
         {
@@ -52,6 +57,17 @@ namespace ase_assignment
             int parametersRequired = 0;
             validCommand = true;
             variableOveride = false;
+            bool runCommandPrev;
+            if (runCommand == true)
+            {
+                //this.drawer.DrawTo(100, 100);
+                runCommandPrev = true;
+            }
+            else
+            {
+                runCommandPrev = false;
+            }
+
             if (blockCounter != 0) { runCommand = false; }
             switch (command)
             {
@@ -118,27 +134,116 @@ namespace ase_assignment
                     intParam = true;
                     break;
                 case "if":
+                    variableOveride = true;
                     intParam = true;
-                    parametersRequired = 1;
-                    IfStatement ifStatement = new IfStatement(currentProgram, lineNumber);
-                    ifStatement.IncreaseCounter();
-                    // get line that command starts on 
-                    // store line in something like LanguageCommands.setStartLine
-                    // have a counter to account for nesting loops for example for every if statement detected add 1 to counter and for every endif detected -1 only when counter is 0 record the line number the loop ends on
-                    break;
-                case "endif":
-                    intParam = true;
+                    parametersRequired = 0;
 
-                    ifStatement.DecreaseCounter();
-                    // get line this happens on then store the line this ends on
+                    if (runCommandPrev == true)
+                    {
+                        if (blockCounter == 1)
+                        {
+                            ifStatement = new IfStatement(currentProgram, lineNumber);
+                            string condition = currentProgram[lineNumber - 1];
+                            string[] condArray = condition.Split(" ");
+                            ifStatement.SetCondition(PullVariable(condArray));
+                        }
+                    }
+                    break;
+                //blockCounter = ifStatement.counter;
+                // get line that command starts on 
+                // store line in something like LanguageCommands.setStartLine
+                // have a counter to account for nesting loops for example for every if statement detected add 1 to counter and for every endif detected -1 only when counter is 0 record the line number the loop ends on
+                case "endif":
+                    intParam = false;
+                    variableOveride = true;
+                    if (blockCounter == -1)
+                    {
+                        validCommand = false;
+                        errorMessage = "loop end present but no beginning";
+                        break;
+                    }
+                    else
+                    {
+                        if (blockCounter == 0 && ifStatement != null)
+                        {
+                            //this.drawer.DrawTo(100, 100);
+                            ifStatement.SetEndLine(lineNumber);
+                            ifStatement.RecordPharase();
+                            string phrase = ifStatement.ReturnPhrase();
+                            
+                            if (ifStatement.CheckCondition() == true)
+                            {
+                                ParseMultipleCommands(phrase);
+                            }
+                            ifStatement = null;
+                            break;
+                            //ParseMultipleCommands("drawto 500 500");
+                            //if (runCommandPrev == true && ifStatement.CheckCondition() == true) { ParseMultipleCommands("drawto 500 500"); }
+                            
+                        }
+                    }
                     break;
                 case "loop":
+                    variableOveride = true;
                     intParam = true;
+                    parametersRequired = 0;
 
+                    if (runCommandPrev == true)
+                    {
+                        if (blockCounter == 1)
+                        {
+                            whileLoop = new IfStatement(currentProgram, lineNumber);
+                            string condition = currentProgram[lineNumber - 1];
+                            
+                            whileLoop.conditionRaw = condition;
+                            string[] condArray = whileLoop.conditionRaw.Split(" ");
+                            varName = condArray[1];
+                            errorMessage = "" + condArray[1];
+                            validCommand = false;
+                            break;
+                        }
+                    }
                     break;
                 case "endloop":
-                    intParam = true;
+                    intParam = false;
+                    variableOveride = true;
+                    if (blockCounter == -1)
+                    {
+                        validCommand = false;
+                        errorMessage = "loop end present but no beginning";
+                        break;
+                    }
+                    else
+                    {
+                        if (blockCounter == 0 && whileLoop != null)
+                        {
+                            //this.drawer.DrawTo(100, 100);
+                            whileLoop.SetEndLine(lineNumber);
+                            whileLoop.RecordPharase();
+                            string phrase = whileLoop.ReturnPhrase();
+                            string[] condArray = whileLoop.conditionRaw.Split(" ");
+                            whileLoop.SetCondition(PullVariable(condArray));
+                            //ParseMultipleCommands("a=a+1");
+                            errorMessage = "" + PullVariable(condArray)[1];
+                            validCommand= false;
 
+
+
+                            bool loopCheck = whileLoop.CheckCondition();
+                            while (loopCheck == true)
+                            {
+                                ParseMultipleCommands(phrase);
+                                condArray[1] = varName;
+                                whileLoop.SetCondition(PullVariable(condArray));
+                                loopCheck = whileLoop.CheckCondition();
+                            }
+                            whileLoop = null;
+                            break;
+                            //ParseMultipleCommands("drawto 500 500");
+                            //if (runCommandPrev == true && ifStatement.CheckCondition() == true) { ParseMultipleCommands("drawto 500 500"); }
+
+                        }
+                    }
                     break;
                 case "method":
                     intParam = true;
@@ -153,8 +258,13 @@ namespace ase_assignment
                     // we can put some bullshit here to parse the variable assignment
                     // so like if line contains an = sign then do setting the variable shouldn't be too fucking hard 
                     // if line contains = take line, split at = sign [0] is name and [1] is value, save to dictionary
-
-                    if (line.Contains("="))
+                    if (line.Contains("==") || line.Contains("!="))
+                    {
+                        validCommand = false;
+                        errorMessage = "invalid command entered";
+                        break;
+                    }
+                    else if (line.Contains("="))
                     {
                         variableOveride = true;
                         parametersRequired = 0;
@@ -162,7 +272,6 @@ namespace ase_assignment
                         string[] commandArray;
                         string[] operation;
                         int value;
-                        int prevValue;
                         string trimmedLine = line.Replace(" ", "");
                         commandArray = trimmedLine.Split('=');
                         if (commandArray.Length == 2)
@@ -356,7 +465,6 @@ namespace ase_assignment
         public void ParseLine(string line, Boolean runCommand)
         {
             intParam = false;
-            int x = 0;
             line = line.Trim().ToLower();
             string[] fullCommand = line.Split(' ');
             string command = fullCommand[0];
@@ -371,6 +479,14 @@ namespace ase_assignment
             else
             {
                 parametersStr = PullVariable(fullCommand.Skip(1).ToArray());
+            }
+            if (command == "if" || command == "method" || command == "loop")
+            {
+                blockCounter = blockCounter + 1;
+            }
+            else if (command == "endif" || command == "endmethod" || command == "endloop")
+            {
+                blockCounter = blockCounter -1;
             }
             CheckCommand(command, false, parametersStr, line);
             if (ValidParams(parametersStr, CheckCommand(command, false, parametersStr, line)) == true && validCommand == true)
@@ -528,9 +644,11 @@ namespace ase_assignment
         /// <param name="userInput">string containing all instructions</param>
         public void ParseMultipleCommands(string userInput)
         {
+
             string[] commands = ProgramArray(userInput);
             SetCurrentProgram(commands);
             lineNumber = 0;
+            blockCounter = 0;
             foreach (string command in commands)
             {
                 lineNumber++;
@@ -572,6 +690,7 @@ namespace ase_assignment
                     errors++;
                 }
                 i++;
+                lineNumber++;
             }
             if (errors > 0)
             {

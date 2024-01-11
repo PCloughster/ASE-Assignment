@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.LinkLabel;
 
 namespace ase_assignment
 {
@@ -17,17 +18,18 @@ namespace ase_assignment
         {
             this.program = program;
             this.startLine = startLine - 1;
-            this.endLine = endLine - 1;
-            this.phrase = program[startLine..endLine];
         }
         
-        public void RecordPharase(int startLine, int endLine, string[] program)
+        public void RecordPharase()
         {
+            startLine += 1;
+            endLine = endLine - 1;
             phrase = program[startLine..endLine];
         }
-        public string[] ReturnPhrase()
+        public string ReturnPhrase()
         {
-            return phrase;
+            string lines = string.Join(Environment.NewLine, phrase);
+            return lines;
         }
         public void SetStartLine(int lineNum)
         {
