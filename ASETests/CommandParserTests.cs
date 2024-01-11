@@ -100,6 +100,9 @@ namespace ASETests
             commandParser.ParseSingleCommand(userInput);
             Assert.AreEqual("Parameter falls outside of reasonable range(0-900)", commandParser.errorMessage);
         }
+        /// <summary>
+        /// checks if variables can be saved within the commandParser
+        /// </summary>
         [TestMethod]
         public void TestVariablesSave()
         {
@@ -109,6 +112,9 @@ namespace ASETests
             commandParser.ParseSingleCommand(userInput);
             Assert.AreEqual(100, commandParser.variables["a"]);
         }
+        /// <summary>
+        /// checks if variables can be assigned by adding to another variable
+        /// </summary>
         [TestMethod]
         public void TestVariablesCanbeAdded()
         {
@@ -119,6 +125,92 @@ namespace ASETests
             commandParser.ParseSingleCommand(userInput);
             commandParser.ParseSingleCommand(userInput2);
             Assert.AreEqual(200, commandParser.variables["b"]);
+        }
+        /// <summary>
+        /// checks that the if statement works by updating a variable inside an if and seeing if it changes
+        /// </summary>
+        [TestMethod]
+        public void TestIfStatementWorks()
+        {
+           
+            CommandParser commandParser = new CommandParser();
+            commandParser.isTest = true;
+            string userInput = "a=1" + Environment.NewLine +
+                               "if a == 1" + Environment.NewLine +
+                               "a=2" + Environment.NewLine +
+                               "endif";
+            Boolean syntaxValid = commandParser.SyntaxCheckProgram(userInput);
+            if (syntaxValid)
+            {
+                commandParser.ParseMultipleCommands(userInput);
+            }
+            
+            Assert.AreEqual(2, commandParser.variables["a"]);
+        }
+        /// <summary>
+        /// checks that the if statement works by updating a variable inside an if and seeing if it doesnt change
+        /// </summary>
+        [TestMethod]
+        public void TestIfStatementIgnoresIfFalse()
+        {
+
+            CommandParser commandParser = new CommandParser();
+            commandParser.isTest = true;
+            string userInput = "a=1" + Environment.NewLine +
+                               "if a == 2" + Environment.NewLine +
+                               "a=2" + Environment.NewLine +
+                               "endif";
+            Boolean syntaxValid = commandParser.SyntaxCheckProgram(userInput);
+            if (syntaxValid)
+            {
+                commandParser.ParseMultipleCommands(userInput);
+            }
+
+            Assert.AreEqual(1, commandParser.variables["a"]);
+        }
+        /// <summary>
+        /// tests loop works by updating a variable by 1 each loop and checking if the value is equal to the expected final value
+        /// </summary>
+        [TestMethod]
+        public void TestLoopWorks()
+        {
+            CommandParser commandParser = new CommandParser();
+            commandParser.isTest = true;
+            string userInput = "a=1" + Environment.NewLine +
+                               "loop a != 10" + Environment.NewLine +
+                               "a=a+1" + Environment.NewLine +
+                               "endloop";
+            Boolean syntaxValid = commandParser.SyntaxCheckProgram(userInput);
+            if (syntaxValid)
+            {
+                commandParser.ParseMultipleCommands(userInput);
+            }
+
+            Assert.AreEqual(10, commandParser.variables["a"]);
+        }
+        /// <summary>
+        /// tests method works by 
+        /// </summary>
+        [TestMethod]
+        public void TestMethodWorks()
+        {
+            CommandParser commandParser = new CommandParser();
+            commandParser.isTest = true;
+            string userInput = "a=1" + Environment.NewLine +
+                               "method method" + Environment.NewLine +
+                               "a=a+1" + Environment.NewLine +
+                               "b=a*2" + Environment.NewLine +
+                               "c=5" + Environment.NewLine +
+                               "endmethod";
+            Boolean syntaxValid = commandParser.SyntaxCheckProgram(userInput);
+            if (syntaxValid)
+            {
+                commandParser.ParseMultipleCommands(userInput);
+            }
+            string control = "a=a+1" + Environment.NewLine +
+                               "b=a*2" + Environment.NewLine +
+                               "c=5";
+            Assert.AreEqual(control, commandParser.methods["method"].phrase);
         }
     }
 }

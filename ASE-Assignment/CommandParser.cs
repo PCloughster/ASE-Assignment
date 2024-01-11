@@ -20,6 +20,7 @@ namespace ase_assignment
         public Dictionary<string, Method> methods = new Dictionary<string, Method>();
         public string? errorMessage;
         public string? errorLog;
+        public bool isTest;
         int upperLimit;
         string[]? parametersStr;
         string? lastCommand;
@@ -43,6 +44,7 @@ namespace ase_assignment
             upperLimit = 900;
             validCommand = true;
             this.drawer = drawer;
+            isTest = false;
         }
         public CommandParser()
         {
@@ -58,6 +60,7 @@ namespace ase_assignment
         /// <returns></returns>
         public int CheckCommand(string command, bool runCommand, string[] parametersStr, string line)
         {
+            System.Diagnostics.Debug.WriteLine("Entering Check Command");
             int[] parameters;
             int parametersRequired = 0;
             validCommand = true;
@@ -153,6 +156,24 @@ namespace ase_assignment
                             ifStatement.SetCondition(PullVariable(condArray));
                         }
                     }
+                    else
+                    {
+                        string condition = currentProgram[lineNumber - 1];
+                        string[] condArray = condition.Split(" ");
+                        condArray[2] = condArray[2].Trim().ToLower();
+                        if (condArray.Length != 4)
+                        {
+                            validCommand = false;
+                            errorMessage = "incorrect number of parameters for a condition provided";
+                            break;
+                        }
+                        else if (condArray[2] != "==" && condArray[2] != "!=" && condArray[2] != ">" && condArray[2] != "<")
+                        {
+                            validCommand = false;
+                            errorMessage = "invalid condition provided: " + condArray[2];
+                            break;
+                        }
+                    }
                     break;
                 //blockCounter = ifStatement.counter;
                 // get line that command starts on 
@@ -161,7 +182,7 @@ namespace ase_assignment
                 case "endif":
                     intParam = false;
                     variableOveride = true;
-                    if (blockCounter == -1)
+                    if (blockCounter <= -1)
                     {
                         validCommand = false;
                         errorMessage = "if end present but no beginning";
@@ -204,11 +225,29 @@ namespace ase_assignment
                             varName = condArray[1];
                         }
                     }
+                    else
+                    {
+                        string condition = currentProgram[lineNumber - 1];
+                        string[] condArray = condition.Split(" ");
+                        condArray[2] = condArray[2].Trim().ToLower();
+                        if (condArray.Length != 4)
+                        {
+                            validCommand = false;
+                            errorMessage = "incorrect number of parameters for a condition provided";
+                            break;
+                        }
+                        else if (condArray[2] != "==" && condArray[2] != "!=" && condArray[2] != ">" && condArray[2] != "<")
+                        {
+                            validCommand = false;
+                            errorMessage = "invalid condition provided: " + condArray[2];
+                            break;
+                        }
+                    }
                     break;
                 case "endloop":
                     intParam = false;
                     variableOveride = true;
-                    if (blockCounter == -1)
+                    if (blockCounter <= -1)
                     {
                         validCommand = false;
                         errorMessage = "loop end present but no beginning";
@@ -259,7 +298,7 @@ namespace ase_assignment
                 case "endmethod":
                     intParam = false;
                     variableOveride = true;
-                    if (blockCounter == -1)
+                    if (blockCounter <= -1)
                     {
                         validCommand = false;
                         errorMessage = "method end present but no beginning";
@@ -287,9 +326,6 @@ namespace ase_assignment
                     }
                     break;
                 default:
-                    // we can put some bullshit here to parse the variable assignment
-                    // so like if line contains an = sign then do setting the variable shouldn't be too fucking hard 
-                    // if line contains = take line, split at = sign [0] is name and [1] is value, save to dictionary
                     if (line.Contains("==") || line.Contains("!="))
                     {
                         validCommand = false;
@@ -449,26 +485,22 @@ namespace ase_assignment
                                     break;
                                 }
                             }
-
-                            if (variables.ContainsKey(commandArray[0]))
+                            if (blockCounter == 0)
                             {
-                                if (runCommand != true)
+                                if (variables.ContainsKey(commandArray[0]))
                                 {
-                                    validCommand = true;
-                                    break;
+                                    if (runCommandPrev == true)
+                                    {
+                                        variables[commandArray[0]] = value;
+                                        System.Diagnostics.Debug.WriteLine(variables[commandArray[0]].ToString());
+                                    }
                                 }
                                 else
                                 {
-                                    variables[commandArray[0]] = value;
+                                    variables.Add(commandArray[0].Trim().ToLower(), value);
+                                    System.Diagnostics.Debug.WriteLine(variables[commandArray[0]].ToString());
                                 }
                             }
-                            else
-                            {
-                                variables.Add(commandArray[0].Trim().ToLower(), value);
-                            }
-
-                            // add item to dictionary commandArray[0] name commandArray[1] value
-                            validCommand = true;
                             break;
                         }
                         else
@@ -497,6 +529,7 @@ namespace ase_assignment
                         break;
                     }
             }
+            System.Diagnostics.Debug.WriteLine("exit check command" + validCommand.ToString());
             return parametersRequired;
         }
         /// <summary>
@@ -508,11 +541,12 @@ namespace ase_assignment
         /// <exception cref="ArgumentException">Thrown if command isn't recognised</exception>
         public void ParseLine(string line, Boolean runCommand)
         {
+            System.Diagnostics.Debug.WriteLine("entering parse line");
             intParam = false;
             line = line.Trim().ToLower();
             string[] fullCommand = line.Split(' ');
             string command = fullCommand[0];
-            if (drawer == null)
+            if (drawer == null && isTest== false)
             {
                 runCommand = false;
             }
@@ -530,14 +564,14 @@ namespace ase_assignment
             }
             else if (command == "endif" || command == "endmethod" || command == "endloop")
             {
-                blockCounter = blockCounter -1;
+                blockCounter = blockCounter - 1;
             }
-            CheckCommand(command, false, parametersStr, line);
             if (ValidParams(parametersStr, CheckCommand(command, false, parametersStr, line)) == true && validCommand == true)
             {
                 SetLastCommand(line);
                 if (runCommand == true)
                 {
+
                     CheckCommand(command, true, parametersStr, line);
                 }
             }
@@ -552,6 +586,7 @@ namespace ase_assignment
                     throw new ArgumentException(errorMessage);
                 }
             }
+            System.Diagnostics.Debug.WriteLine("exit parse line");
         }
 
         // replaces all instances of a variable in a string collection with the int the variable corresponds with
@@ -688,9 +723,9 @@ namespace ase_assignment
         /// <param name="userInput">string containing all instructions</param>
         public void ParseMultipleCommands(string userInput)
         {
-
+            System.Diagnostics.Debug.WriteLine("entering parse multiple");
             string[] commands = ProgramArray(userInput);
-            SetCurrentProgram(commands);
+            //SetCurrentProgram(commands);
             lineNumber = 0;
             blockCounter = 0;
             foreach (string command in commands)
@@ -699,6 +734,7 @@ namespace ase_assignment
                 ParseLine(command, true);
                 SetLastProgram(userInput);
             }
+            System.Diagnostics.Debug.WriteLine("exit parse mult");
 
         }
 
@@ -717,13 +753,17 @@ namespace ase_assignment
         /// <returns></returns>
         public Boolean SyntaxCheckProgram(String program)
         {
+            System.Diagnostics.Debug.WriteLine("entering syntax check");
             string[] commands = ProgramArray(program);
             SetCurrentProgram(commands);
             errorLog = "";
             int i = 1;
             int errors = 0;
+            lineNumber = 0;
+            blockCounter = 0;
             foreach (string command in commands)
             {
+                lineNumber++;
                 try
                 {
                     ParseLine(command, false);
@@ -734,13 +774,18 @@ namespace ase_assignment
                     errors++;
                 }
                 i++;
-                lineNumber++;
             }
+            variables.Clear();
+            System.Diagnostics.Debug.WriteLine("exiting syntax check");
             if (errors > 0)
             {
                 return false;
             }
-            else { return true; }
+            else {
+                return true; 
+            }
+
+            
         }
         /// <summary>
         /// Converts the program string to an array 
