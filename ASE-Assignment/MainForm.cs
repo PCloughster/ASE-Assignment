@@ -29,6 +29,7 @@ namespace ase_assignment
             {
                 errorConsole.Text = "Syntax is correct.";
                 commandParser.ParseMultipleCommands(multiLineConsole.Text);
+                commandParser.variables.Clear();
             }
             else
             {

@@ -11,6 +11,14 @@ namespace ase_assignment
         int paramsReq;
         public string phrase;
         public string name;
+        /// <summary>
+        /// Constructor for all language commands including program and startline
+        /// </summary>
+        /// <param name="program">the whole program in an array</param>
+        /// <param name="startLine">the line in which the codeblock starts</param>
+        /// <param name="phrase">stores the codeblock's phrase in an array</param>
+        /// <param name="name">stores the name of the method</param>
+        /// <param name="paramsReq">number of parameters required for method (unimplemented)</param>
         public Method(string[] program, int startLine) : base(program, startLine)
         {
             string defineLine = program[startLine - 1];
