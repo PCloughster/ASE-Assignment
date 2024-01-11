@@ -60,7 +60,6 @@ namespace ase_assignment
         /// <returns></returns>
         public int CheckCommand(string command, bool runCommand, string[] parametersStr, string line)
         {
-            System.Diagnostics.Debug.WriteLine("Entering Check Command");
             int[] parameters;
             int parametersRequired = 0;
             validCommand = true;
@@ -492,13 +491,11 @@ namespace ase_assignment
                                     if (runCommandPrev == true)
                                     {
                                         variables[commandArray[0]] = value;
-                                        System.Diagnostics.Debug.WriteLine(variables[commandArray[0]].ToString());
                                     }
                                 }
                                 else
                                 {
                                     variables.Add(commandArray[0].Trim().ToLower(), value);
-                                    System.Diagnostics.Debug.WriteLine(variables[commandArray[0]].ToString());
                                 }
                             }
                             break;
@@ -529,7 +526,6 @@ namespace ase_assignment
                         break;
                     }
             }
-            System.Diagnostics.Debug.WriteLine("exit check command" + validCommand.ToString());
             return parametersRequired;
         }
         /// <summary>
@@ -541,7 +537,6 @@ namespace ase_assignment
         /// <exception cref="ArgumentException">Thrown if command isn't recognised</exception>
         public void ParseLine(string line, Boolean runCommand)
         {
-            System.Diagnostics.Debug.WriteLine("entering parse line");
             intParam = false;
             line = line.Trim().ToLower();
             string[] fullCommand = line.Split(' ');
@@ -586,7 +581,6 @@ namespace ase_assignment
                     throw new ArgumentException(errorMessage);
                 }
             }
-            System.Diagnostics.Debug.WriteLine("exit parse line");
         }
 
         // replaces all instances of a variable in a string collection with the int the variable corresponds with
@@ -723,7 +717,6 @@ namespace ase_assignment
         /// <param name="userInput">string containing all instructions</param>
         public void ParseMultipleCommands(string userInput)
         {
-            System.Diagnostics.Debug.WriteLine("entering parse multiple");
             string[] commands = ProgramArray(userInput);
             //SetCurrentProgram(commands);
             lineNumber = 0;
@@ -734,7 +727,6 @@ namespace ase_assignment
                 ParseLine(command, true);
                 SetLastProgram(userInput);
             }
-            System.Diagnostics.Debug.WriteLine("exit parse mult");
 
         }
 
@@ -753,7 +745,6 @@ namespace ase_assignment
         /// <returns></returns>
         public Boolean SyntaxCheckProgram(String program)
         {
-            System.Diagnostics.Debug.WriteLine("entering syntax check");
             string[] commands = ProgramArray(program);
             SetCurrentProgram(commands);
             errorLog = "";
@@ -776,7 +767,6 @@ namespace ase_assignment
                 i++;
             }
             variables.Clear();
-            System.Diagnostics.Debug.WriteLine("exiting syntax check");
             if (errors > 0)
             {
                 return false;
