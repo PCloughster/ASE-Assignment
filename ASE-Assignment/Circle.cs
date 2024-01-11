@@ -34,12 +34,12 @@ namespace ase_assignment
             if (fillType == true)
             {
                 SolidBrush b = new SolidBrush(colour);
-                g.FillEllipse(b, x, y, radius, radius);
+                g.FillEllipse(b, x-(radius /2), y-(radius/2), radius, radius);
             }
             else
             {
                 Pen p = new Pen(colour, 2);
-                g.DrawEllipse(p, x, y, radius, radius);
+                g.DrawEllipse(p, x - (radius / 2), y - (radius / 2), radius, radius);
             }
         }
         /// <summary>
