@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace ase_assignment
@@ -14,7 +16,8 @@ namespace ase_assignment
     /// </summary>
     public class CommandParser
     {
-        public static Dictionary<string, int> variables = new Dictionary<string, int>();
+        public Dictionary<string, int> variables = new Dictionary<string, int>();
+        public Dictionary<string, Method> methods = new Dictionary<string, Method>();
         public string? errorMessage;
         public string? errorLog;
         int upperLimit;
@@ -28,9 +31,11 @@ namespace ase_assignment
         Boolean variableOveride = false;
         int lineNumber = 0;
         int blockCounter;
+        Method method;
         IfStatement whileLoop;
         IfStatement ifStatement;
         string varName;
+        List<string> methodBuffer = new List<string>();
 
 
         public CommandParser(Drawer drawer)
@@ -159,7 +164,7 @@ namespace ase_assignment
                     if (blockCounter == -1)
                     {
                         validCommand = false;
-                        errorMessage = "loop end present but no beginning";
+                        errorMessage = "if end present but no beginning";
                         break;
                     }
                     else
@@ -194,13 +199,9 @@ namespace ase_assignment
                         {
                             whileLoop = new IfStatement(currentProgram, lineNumber);
                             string condition = currentProgram[lineNumber - 1];
-                            
                             whileLoop.conditionRaw = condition;
                             string[] condArray = whileLoop.conditionRaw.Split(" ");
                             varName = condArray[1];
-                            errorMessage = "" + condArray[1];
-                            validCommand = false;
-                            break;
                         }
                     }
                     break;
@@ -217,15 +218,11 @@ namespace ase_assignment
                     {
                         if (blockCounter == 0 && whileLoop != null)
                         {
-                            //this.drawer.DrawTo(100, 100);
                             whileLoop.SetEndLine(lineNumber);
                             whileLoop.RecordPharase();
                             string phrase = whileLoop.ReturnPhrase();
                             string[] condArray = whileLoop.conditionRaw.Split(" ");
                             whileLoop.SetCondition(PullVariable(condArray));
-                            //ParseMultipleCommands("a=a+1");
-                            errorMessage = "" + PullVariable(condArray)[1];
-                            validCommand= false;
 
 
 
@@ -239,20 +236,55 @@ namespace ase_assignment
                             }
                             whileLoop = null;
                             break;
-                            //ParseMultipleCommands("drawto 500 500");
-                            //if (runCommandPrev == true && ifStatement.CheckCondition() == true) { ParseMultipleCommands("drawto 500 500"); }
-
                         }
                     }
                     break;
                 case "method":
-                    intParam = true;
-                    
+                    variableOveride = true;
+                    intParam = false;
+                    parametersRequired = 0;
 
+                    if (runCommandPrev == true)
+                    {
+                        if (blockCounter == 1)
+                        {
+                            method = new Method(currentProgram, lineNumber);
+                        }
+                    }
+                    else
+                    {
+                        methodBuffer.Add(parametersStr[0]);
+                    }
                     break;
                 case "endmethod":
-                    intParam = true;
-
+                    intParam = false;
+                    variableOveride = true;
+                    if (blockCounter == -1)
+                    {
+                        validCommand = false;
+                        errorMessage = "method end present but no beginning";
+                        break;
+                    }
+                    else
+                    {
+                        if (blockCounter == 0 && method != null)
+                        {
+                            method.SetEndLine(lineNumber);
+                            method.RecordPharase();
+                            string phrase = method.ReturnPhrase();
+                            method.phrase = phrase;
+                            if (methods.ContainsKey(method.name))
+                            {
+                                methods[method.name] = method;
+                            }
+                            else
+                            {
+                                methods.Add(method.name, method);
+                            }
+                            method = null;
+                            break;
+                        }
+                    }
                     break;
                 default:
                     // we can put some bullshit here to parse the variable assignment
@@ -443,6 +475,18 @@ namespace ase_assignment
                         {
                             validCommand = false;
                             errorMessage = "variable assignment attempted with too many parameters";
+                            break;
+                        }
+                    }
+                    else if (methods.ContainsKey(command) || methodBuffer.Contains(command))
+                    {
+                        if (methods.ContainsKey(command) != true)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            ParseMultipleCommands(methods[command].phrase);
                             break;
                         }
                     }
